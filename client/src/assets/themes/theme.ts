@@ -39,7 +39,7 @@ export const defaultTheme: DefaultTheme = {
       small: '1.5rem',
       medium: '1.7rem',
       large: '2.2rem',
-      xl: '4.5rem',
+      xl: '3rem',
       huge: '5.5rem',
     },
   },

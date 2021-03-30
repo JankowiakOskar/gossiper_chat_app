@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useAppSelector } from 'store';
 import styled from 'styled-components';
 import { motion, useAnimation } from 'framer-motion';
 import { Routes } from 'routes';
@@ -53,7 +54,7 @@ const wrapperVariants = {
 
 const links: ListElementType[] = [
   { name: 'Home', path: Routes.Home, icon: <HomeSVG /> },
-  { name: 'Chats', icon: <ChatIcon /> },
+  { name: 'Chats', path: Routes.ChatChannels, icon: <ChatIcon /> },
   { name: 'Log In', path: Routes.Auth, icon: <PadlockSVG /> },
 ];
 
@@ -63,6 +64,14 @@ const NavBar = () => {
   const wrapperAnimation = useAnimation();
   const listElAnimation = useAnimation();
   const location = useLocation();
+  const authToken = useAppSelector(state => state.auth.authToken);
+
+  const newList = authToken
+    ? links.map(el => {
+        if (el.name === 'Log In') return { name: 'Logout', icon: el.icon };
+        return el;
+      })
+    : links;
 
   const toggleNavBar = () => {
     if (isAnimate) return;
@@ -82,7 +91,11 @@ const NavBar = () => {
       setAnimate(prevState => !prevState);
     };
     sequence();
-  }, [isOpenNav, wrapperAnimation, listElAnimation, location]);
+  }, [isOpenNav, wrapperAnimation, listElAnimation]);
+
+  useEffect(() => {
+    setOpenNav(false);
+  }, [location.pathname]);
 
   return (
     <StyledNavBar variants={wrapperVariants} initial={false} animate={wrapperAnimation}>
@@ -91,7 +104,7 @@ const NavBar = () => {
         <BurgerMenu isOpen={isOpenNav} setOpen={toggleNavBar} />
       </Wrapper>
       <Nav>
-        <List list={links} animationControls={listElAnimation} />
+        <List list={newList} animationControls={listElAnimation} />
       </Nav>
     </StyledNavBar>
   );
