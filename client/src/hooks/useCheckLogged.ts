@@ -7,12 +7,12 @@ const useCheckLogged = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const checkUserPermision = async () => {
+    const checkUserPermission = async () => {
       await dispatch(checkOutLoggedIn());
       setChecking(false);
     };
 
-    checkUserPermision();
+    checkUserPermission();
   }, [dispatch]);
 
   return isChecking;

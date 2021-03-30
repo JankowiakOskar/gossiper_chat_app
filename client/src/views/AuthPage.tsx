@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import TransitionProvider from 'providers/TransitionProvider';
 import AuthForm from 'components/organisms/AuthForm/AuthForm';
 
 const Wrapper = styled.div`
@@ -9,9 +10,11 @@ const Wrapper = styled.div`
 `;
 
 const AuthPage = (): JSX.Element => (
-  <Wrapper>
-    <AuthForm />
-  </Wrapper>
+  <TransitionProvider>
+    <Wrapper>
+      <AuthForm />
+    </Wrapper>
+  </TransitionProvider>
 );
 
 export default AuthPage;

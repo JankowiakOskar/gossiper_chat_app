@@ -7,6 +7,7 @@ import { Routes } from 'routes';
 import { ReactComponent as HomeSVG } from 'assets/svgs/HomeSVG.svg';
 import { ReactComponent as ChatIcon } from 'assets/svgs/ChatSVG.svg';
 import { ReactComponent as PadlockSVG } from 'assets/svgs/PadlockSVG.svg';
+import CustomLink from 'components/atoms/CustomLink/CustomLink';
 import Brand from 'components/atoms/Brand/Brand';
 import BurgerMenu from 'components/atoms/BurgerMenu/BurgerMenu';
 import List, { listElementVariants, ListElementType } from 'components/molecules/List/List';
@@ -100,7 +101,9 @@ const NavBar = () => {
   return (
     <StyledNavBar variants={wrapperVariants} initial={false} animate={wrapperAnimation}>
       <Wrapper>
-        <Brand onNavBar />
+        <CustomLink to={Routes.Home}>
+          <Brand onNavBar />
+        </CustomLink>
         <BurgerMenu isOpen={isOpenNav} setOpen={toggleNavBar} />
       </Wrapper>
       <Nav>
