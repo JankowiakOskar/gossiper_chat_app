@@ -1,22 +1,44 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Routes } from 'routes';
-import { useAppDispatch } from 'store';
+import { useAppDispatch, useAppSelector } from 'store';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { signUp, logIn } from 'features/auth/authSlice';
 import { UserData } from 'features/auth/types';
-import styled from 'styled-components';
+import styled, { css, ThemeContext } from 'styled-components';
 import InputField from 'components/atoms/InputField/InputField';
 import Brand from 'components/atoms/Brand/Brand';
 import Button from 'components/atoms/Button/Button';
+import Loader from 'react-loader-spinner';
 
-const Wrapper = styled.div`
+interface WrapperProps {
+  readonly isAuthenticate: boolean;
+}
+
+const Wrapper = styled.div<WrapperProps>`
+  max-height: 50rem;
   max-width: 50rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+
+  ${({ isAuthenticate }) =>
+    isAuthenticate &&
+    css`
+      &:after {
+        content: '';
+        opacity: 0.7;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: rgba(255, 255, 255, 0.7);
+      }
+    `}
 `;
 
 const Form = styled.form`
@@ -32,6 +54,16 @@ const StyledInputField = styled(InputField)`
 const StyledButton = styled(Button)`
   margin: 3rem 0 2rem 0;
   align-self: center;
+`;
+
+const LoaderWrapper = styled.div`
+  width: 7rem;
+  height: 7rem;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
 `;
 
 const registerSchema = yup.object().shape({
@@ -56,6 +88,8 @@ const AuthForm = () => {
   });
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const { isAuthenticate } = useAppSelector(state => state.auth);
+  const themeContext = useContext(ThemeContext);
 
   const switchMode = (): void => setRegister(prevState => !prevState);
 
@@ -76,7 +110,7 @@ const AuthForm = () => {
   }, [isRegistered, reset]);
 
   return (
-    <Wrapper>
+    <Wrapper isAuthenticate={isAuthenticate}>
       <Brand />
       <Form autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
         {isRegistered ? (
@@ -98,11 +132,18 @@ const AuthForm = () => {
             />
           </>
         )}
-        <StyledButton role='submit'>{isRegistered ? 'Log In' : 'Create account'}</StyledButton>
+        <StyledButton role='submit' disabled={isAuthenticate}>
+          {isRegistered ? 'Log In' : 'Create account'}
+        </StyledButton>
       </Form>
-      <Button role='button' onClick={switchMode} underline>
+      <Button role='button' onClick={switchMode} underline disabled={isAuthenticate}>
         {isRegistered ? 'Create new account' : 'I want sign in'}
       </Button>
+      {isAuthenticate && (
+        <LoaderWrapper>
+          <Loader type='ThreeDots' color={themeContext.colors.lightBlue} height={70} width={70} />{' '}
+        </LoaderWrapper>
+      )}
     </Wrapper>
   );
 };

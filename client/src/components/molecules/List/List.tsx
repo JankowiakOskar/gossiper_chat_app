@@ -50,6 +50,7 @@ export type ListElementType = {
   name: string;
   path?: string;
   icon?: React.SVGProps<SVGSVGElement>;
+  clickHandler?: () => any;
 };
 
 type Props = {
@@ -57,27 +58,42 @@ type Props = {
   animationControls: AnimationControls;
 };
 
-const List: React.FC<Props> = ({ list, animationControls }) => (
-  <StyledList>
-    {list.map((el, index) => {
-      if (el.path)
+const List: React.FC<Props> = ({ list, animationControls }) => {
+  const handleClick = (e: React.MouseEvent, callback?: () => any) => {
+    if (!callback) return;
+    callback();
+  };
+
+  return (
+    <StyledList>
+      {list.map((el, index) => {
+        const { clickHandler } = el;
+
+        if (el.path)
+          return (
+            <ListElement key={el.name} custom={index} initial={listElementVariants.initial} animate={animationControls}>
+              <CustomLink to={el.path}>
+                {el.icon && el.icon}
+                <StyledSpan>{el.name}</StyledSpan>
+              </CustomLink>
+            </ListElement>
+          );
+
         return (
-          <ListElement key={el.name} custom={index} initial={listElementVariants.initial} animate={animationControls}>
-            <CustomLink to={el.path}>
-              {el.icon && el.icon}
-              <StyledSpan>{el.name}</StyledSpan>
-            </CustomLink>
+          <ListElement
+            key={el.name}
+            custom={index}
+            initial={listElementVariants.initial}
+            animate={animationControls}
+            onClick={e => handleClick(e, clickHandler)}
+          >
+            {el.icon && el.icon}
+            <StyledSpan>{el.name}</StyledSpan>
           </ListElement>
         );
-
-      return (
-        <ListElement key={el.name} custom={index} initial={listElementVariants.initial} animate={animationControls}>
-          {el.icon && el.icon}
-          <StyledSpan>{el.name}</StyledSpan>
-        </ListElement>
-      );
-    })}
-  </StyledList>
-);
+      })}
+    </StyledList>
+  );
+};
 
 export default List;

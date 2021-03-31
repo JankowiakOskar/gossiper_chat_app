@@ -64,7 +64,13 @@ export const checkOutLoggedIn = createAsyncThunk('auth/checkOutLoggedIn', async 
 export const authSlice = createSlice({
   name: 'posts',
   initialState,
-  reducers: {},
+  reducers: {
+    logOut: state => {
+      localStorage.removeItem('auth-token');
+      state.authToken = '';
+      state.login = '';
+    },
+  },
   extraReducers: builder => {
     builder.addCase(signUp.pending, state => {
       state.isAuthenticate = !state.isAuthenticate;
@@ -96,5 +102,7 @@ export const authSlice = createSlice({
     });
   },
 });
+
+export const { logOut } = authSlice.actions;
 
 export default authSlice.reducer;

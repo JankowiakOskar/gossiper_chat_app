@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useAppSelector } from 'store';
+import { useAppSelector, useAppDispatch } from 'store';
+import { logOut } from 'features/auth/authSlice';
 import styled from 'styled-components';
 import { motion, useAnimation } from 'framer-motion';
 import { Routes } from 'routes';
@@ -53,12 +54,6 @@ const wrapperVariants = {
   },
 };
 
-const links: ListElementType[] = [
-  { name: 'Home', path: Routes.Home, icon: <HomeSVG /> },
-  { name: 'Chats', path: Routes.ChatChannels, icon: <ChatIcon /> },
-  { name: 'Log In', path: Routes.Auth, icon: <PadlockSVG /> },
-];
-
 const NavBar = () => {
   const [isOpenNav, setOpenNav] = useState(false);
   const [isAnimate, setAnimate] = useState(false);
@@ -66,13 +61,20 @@ const NavBar = () => {
   const listElAnimation = useAnimation();
   const location = useLocation();
   const authToken = useAppSelector(state => state.auth.authToken);
-
-  const newList = authToken
-    ? links.map(el => {
-        if (el.name === 'Log In') return { name: 'Logout', icon: el.icon };
-        return el;
-      })
-    : links;
+  const dispatch = useAppDispatch();
+  const [list, setList] = useState<ListElementType[]>(() =>
+    !authToken
+      ? [
+          { name: 'Home', path: Routes.Home, icon: <HomeSVG /> },
+          { name: 'Chats', path: Routes.ChatChannels, icon: <ChatIcon /> },
+          { name: 'Log In', path: Routes.Auth, icon: <PadlockSVG /> },
+        ]
+      : [
+          { name: 'Home', path: Routes.Home, icon: <HomeSVG /> },
+          { name: 'Chats', path: Routes.ChatChannels, icon: <ChatIcon /> },
+          { name: 'Logout', icon: <PadlockSVG />, clickHandler: () => dispatch(logOut()) },
+        ],
+  );
 
   const toggleNavBar = () => {
     if (isAnimate) return;
@@ -98,6 +100,16 @@ const NavBar = () => {
     setOpenNav(false);
   }, [location.pathname]);
 
+  useEffect(() => {
+    const filteredList = list.filter(el => (!authToken ? el.name !== 'Logout' : el.name !== 'Log In'));
+    setList(() =>
+      !authToken
+        ? [...filteredList, { name: 'Logout', icon: <PadlockSVG />, clickHandler: () => dispatch(logOut()) }]
+        : [...filteredList, { name: 'Log In', path: Routes.Auth, icon: <PadlockSVG /> }],
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authToken]);
+
   return (
     <StyledNavBar variants={wrapperVariants} initial={false} animate={wrapperAnimation}>
       <Wrapper>
@@ -107,7 +119,7 @@ const NavBar = () => {
         <BurgerMenu isOpen={isOpenNav} setOpen={toggleNavBar} />
       </Wrapper>
       <Nav>
-        <List list={newList} animationControls={listElAnimation} />
+        <List list={list} animationControls={listElAnimation} />
       </Nav>
     </StyledNavBar>
   );
