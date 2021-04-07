@@ -6,7 +6,7 @@ import PrivateRoute from 'providers/PrivateRoute';
 import MainLayout from 'layouts/MainLayout';
 import AuthPage from 'views/AuthPage';
 import Home from 'views/Home';
-import ChatChannels from 'views/ChatChannels';
+import ChatRoom from 'views/ChatRoom';
 
 const Root = () => {
   const isChecking = useCheckLogged();
@@ -20,7 +20,7 @@ const Root = () => {
           <Switch location={location} key={location.pathname}>
             <Route exact path={Routes.Home} component={Home} />
             <Route path={Routes.Auth} component={AuthPage} />
-            <PrivateRoute path={Routes.ChatChannels} component={ChatChannels} />
+            <PrivateRoute path={Routes.ChatChannels} component={ChatRoom} />
           </Switch>
         </AnimatePresence>
       </MainLayout>

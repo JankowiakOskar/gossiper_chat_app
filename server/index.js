@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const socket = require("socket.io");
 //Import Routes
 const authRoute = require("./routes/auth");
 const postRoute = require("./routes/posts");
@@ -15,6 +16,8 @@ const corsOptions = {
 
 mongoose.set("useUnifiedTopology", true);
 dotenv.config();
+
+// enable cors
 app.use(cors(corsOptions));
 
 //Connect to DB
@@ -29,6 +32,30 @@ app.use(express.json());
 app.use("/api/user", authRoute);
 app.use("/api/posts", postRoute);
 
-// enable cors
+const PORT = 5000;
+const server = app.listen(PORT, () => {
+	console.log(`Listening on port ${PORT}`);
+	console.log(`http://localhost:${PORT}`);
+});
 
-app.listen(5000, () => console.log("Server running"));
+const io = socket(server, { cors: { ...corsOptions } });
+
+io.on("connect", (socket) => {
+	const users = [];
+
+	socket.on("user", (user) => {
+		const newUser = {
+			id: socket.id,
+			name: user,
+		};
+		users.push(newUser);
+
+		socket.emit("users", users);
+	});
+
+	socket.on('message' msg => {
+		const newMsg = {
+			date: new Date().toString()
+		}
+	})
+});
