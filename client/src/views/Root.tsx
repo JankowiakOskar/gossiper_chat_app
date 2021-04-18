@@ -2,11 +2,14 @@ import { Switch, Route, useLocation } from 'react-router-dom';
 import { Routes } from 'routes';
 import useCheckLogged from 'hooks/useCheckLogged';
 import { AnimatePresence } from 'framer-motion';
+import smoothscroll from 'smoothscroll-polyfill';
 import PrivateRoute from 'providers/PrivateRoute';
 import MainLayout from 'layouts/MainLayout';
 import AuthPage from 'views/AuthPage';
 import Home from 'views/Home';
 import ChatRoom from 'views/ChatRoom';
+
+smoothscroll.polyfill();
 
 const Root = () => {
   const isChecking = useCheckLogged();

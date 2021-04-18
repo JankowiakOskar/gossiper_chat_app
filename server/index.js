@@ -7,6 +7,7 @@ const socket = require("socket.io");
 //Import Routes
 const authRoute = require("./routes/auth");
 const postRoute = require("./routes/posts");
+const { createMessage } = require("./utils/message");
 
 const corsOptions = {
 	origin: "http://localhost:3000",
@@ -40,22 +41,30 @@ const server = app.listen(PORT, () => {
 
 const io = socket(server, { cors: { ...corsOptions } });
 
-io.on("connect", (socket) => {
-	const users = [];
+const users = [];
 
-	socket.on("user", (user) => {
+io.on("connect", (socket) => {
+	socket.on("new user", (user) => {
 		const newUser = {
 			id: socket.id,
 			name: user,
 		};
 		users.push(newUser);
-
-		socket.emit("users", users);
+		socket.broadcast.emit(
+			"message",
+			createMessage(`${user}, has joined to chat, welcome!`),
+		);
+		io.emit("users", users);
 	});
 
-	socket.on('message' msg => {
-		const newMsg = {
-			date: new Date().toString()
-		}
-	})
+	socket.on("message", (msg) => {
+		const { name } = users.find((user) => user.id === socket.id);
+		const newMsg = createMessage(msg, name);
+		io.emit("message", newMsg);
+	});
+
+	socket.on("disconnect", (user) => {
+		const disconnectMsg = createMessage(`${user} has left from chat room`);
+		socket.broadcast.emit("message", disconnectMsg);
+	});
 });

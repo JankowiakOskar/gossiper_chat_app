@@ -1,10 +1,15 @@
-import { useState, useEffect } from 'react';
-import { useAppSelector } from 'store';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { io } from 'socket.io-client';
+import { UserType, MessageType } from 'utils/types/types';
+import { Direction } from 'utils/types/enums';
+import { useAppSelector } from 'store';
+import { io, Socket } from 'socket.io-client';
+import short from 'short-uuid';
+import MessageForm from 'components/organisms/MessageForm/MessageForm';
+import Message from 'components/molecules/Message/Message';
 
 const URL = 'http://localhost:5000';
-const socket = io(URL);
+let socket: Socket;
 
 const Wrapper = styled.div`
   width: 100%;
@@ -16,49 +21,67 @@ const Wrapper = styled.div`
 `;
 
 const MessagesWrapper = styled.div`
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
   flex: 1;
   width: 100%;
+  overflow-y: scroll;
 `;
 
-type User = {
-  id: string;
-  name: string;
-};
-
-type Message = {
-  date: string;
-  sender: User['name'];
-  text: string;
-};
-
 const ChatRoom = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [messages, setMessages] = useState<Message[]>([]);
   const { login } = useAppSelector(state => state.auth);
+  const [users, setUsers] = useState<UserType[]>([]);
+  const [messages, setMessages] = useState<MessageType[]>([]);
+
+  const endMessagesRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
+    const scrollToBottom = (ref: HTMLElement) => {
+      ref.scrollIntoView({ behavior: 'smooth' });
+    };
+    if (endMessagesRef.current !== null) {
+      scrollToBottom(endMessagesRef.current);
+    }
+  }, [messages]);
+
+  useEffect(() => {
+    socket = io(URL);
     socket.on('connect', () => {
-      socket.emit('user', login);
+      socket.emit('new user', login);
     });
 
-    socket.on('users', currUsers => setUsers(prevUsers => [...prevUsers, ...currUsers]));
-    socket.on('message', msg => setMessages(prevMessages => [...prevMessages, msg]));
+    socket.on('users', currUsers => setUsers([...currUsers]));
+    socket.on('message', msg => {
+      setMessages(prevMessages => [...prevMessages, msg]);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, [login]);
+
   console.log(users);
+
+  const messagesList = messages.map(msg => (
+    <Message
+      key={short.generate()}
+      text={msg.text}
+      date={msg.date}
+      sender={msg.sender === login ? 'You' : msg.sender}
+      direction={msg.sender === login ? Direction.Right : Direction.Left}
+    />
+  ));
+
   return (
     <Wrapper>
       <MessagesWrapper>
-        <ul>
-          {messages.map(({ date, sender, text }) => (
-            <li key={text}>
-              {date} - {sender}: {text}
-            </li>
-          ))}
-        </ul>
+        {messagesList}
+        <div ref={endMessagesRef} />
       </MessagesWrapper>
-      <form>
-        <input type='text' />
-        <button type='submit'>Send</button>
-      </form>
+      <MessageForm username={login} handleDataCB={(message: MessageType) => socket.emit('message', message.text)} />
     </Wrapper>
   );
 };
