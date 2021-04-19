@@ -11,6 +11,7 @@ declare module 'styled-components' {
       darkBlue: string;
       red: string;
       grey: string;
+      darkGrey: string;
     };
     font: {
       size: {
@@ -35,6 +36,7 @@ export const defaultTheme: DefaultTheme = {
     darkBlue: '#0D0630',
     red: '#e02c2c',
     grey: '#eaeaea',
+    darkGrey: '#ABA3A3',
   },
   font: {
     size: {

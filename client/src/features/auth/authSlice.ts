@@ -12,7 +12,7 @@ const initialState = {
 
 export const signUp = createAsyncThunk<AuthState, UserData>('auth/signUp', async (userData, { rejectWithValue }) => {
   try {
-    const { data } = await axios.post('http://localhost:5000/api/user/register', userData);
+    const { data } = await axios.post('http://192.168.100.17:5000/api/user/register', userData);
     return data;
   } catch (err) {
     const {
@@ -27,7 +27,7 @@ export const logIn = createAsyncThunk<AuthState, UserData, { rejectValue: ErrorM
   'auth/logIn',
   async (userData, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post('http://localhost:5000/api/user/login', userData);
+      const { data } = await axios.post('http://192.168.100.17:5000/api/user/login', userData);
       const { authToken } = data;
       saveItemInLS<string>('auth-token', authToken);
       return data;
@@ -50,7 +50,7 @@ export const checkOutLoggedIn = createAsyncThunk('auth/checkOutLoggedIn', async 
     },
   };
   try {
-    const { data } = await axios.get('http://localhost:5000/api/user/checkLoggedIn', config);
+    const { data } = await axios.get('http://192.168.100.17:5000/api/user/checkLoggedIn', config);
     return data;
   } catch (err) {
     const {

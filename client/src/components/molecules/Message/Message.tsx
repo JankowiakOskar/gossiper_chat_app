@@ -1,7 +1,7 @@
 import React from 'react';
 import { UserType, MessageType } from 'utils/types/types';
 import { Direction } from 'utils/types/enums';
-import { MessageWrapper, MessageAuthor, MessageDate, MessageText } from './Styled';
+import { MessageWrapper, MessageAuthor, MessageDate, MessageText } from './MessageStyles';
 
 export type MessageProps = {
   text: MessageType['text'];

@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import { MessageType, UserType } from 'utils/types/types';
+import ButtonSend from 'components/atoms/SendButton/SendButton';
+import InputMessage from 'components/atoms/InputMessage/InputMessage';
+import { FormWrapper, Form } from './MessageFormStyles';
 
 type Props = {
   handleDataCB: (date: MessageType) => any;
@@ -38,10 +41,12 @@ const MessageForm = ({ handleDataCB, username }: Props) => {
   }, [isSubmitted]);
 
   return (
-    <form onSubmit={e => handleSubmit(e)}>
-      <input type='text' value={typingMessage.text} onChange={e => handleChange(e, username)} />
-      <button type='submit'>Send</button>
-    </form>
+    <FormWrapper>
+      <Form onSubmit={e => handleSubmit(e)}>
+        <InputMessage type='text' placeholder='Type new message' value={typingMessage.text} onChange={e => handleChange(e, username)} />
+        <ButtonSend type='submit' />
+      </Form>
+    </FormWrapper>
   );
 };
 

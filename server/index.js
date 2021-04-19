@@ -9,17 +9,11 @@ const authRoute = require("./routes/auth");
 const postRoute = require("./routes/posts");
 const { createMessage } = require("./utils/message");
 
-const corsOptions = {
-	origin: "http://localhost:3000",
-	credentials: true, //access-control-allow-credentials:true
-	optionSuccessStatus: 200,
-};
-
 mongoose.set("useUnifiedTopology", true);
 dotenv.config();
 
 // enable cors
-app.use(cors(corsOptions));
+app.use(cors());
 
 //Connect to DB
 mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true }, () =>
@@ -34,12 +28,16 @@ app.use("/api/user", authRoute);
 app.use("/api/posts", postRoute);
 
 const PORT = 5000;
-const server = app.listen(PORT, () => {
-	console.log(`Listening on port ${PORT}`);
-	console.log(`http://localhost:${PORT}`);
+const HOST = "192.168.100.17";
+const server = app.listen(PORT, HOST, () => {
+	console.log(`server has started and listening on port: ${PORT}`);
 });
 
-const io = socket(server, { cors: { ...corsOptions } });
+const io = socket(server, {
+	cors: {
+		origin: "*",
+	},
+});
 
 const users = [];
 
@@ -52,7 +50,7 @@ io.on("connect", (socket) => {
 		users.push(newUser);
 		socket.broadcast.emit(
 			"message",
-			createMessage(`${user}, has joined to chat, welcome!`),
+			createMessage(`${user}, has joined to chat, welcome!`, "Chat Bot"),
 		);
 		io.emit("users", users);
 	});
@@ -64,7 +62,13 @@ io.on("connect", (socket) => {
 	});
 
 	socket.on("disconnect", (user) => {
-		const disconnectMsg = createMessage(`${user} has left from chat room`);
+		const { name } = users.find((user) => user.id === socket.id);
+		const disconnectMsg = createMessage(
+			`${name} has left from chat room`,
+			"Chat Bot",
+		);
 		socket.broadcast.emit("message", disconnectMsg);
 	});
 });
+
+console.log(server);

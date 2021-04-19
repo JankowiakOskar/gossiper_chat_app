@@ -8,7 +8,8 @@ import short from 'short-uuid';
 import MessageForm from 'components/organisms/MessageForm/MessageForm';
 import Message from 'components/molecules/Message/Message';
 
-const URL = 'http://localhost:5000';
+const URL = '192.168.100.17:5000';
+
 let socket: Socket;
 
 const Wrapper = styled.div`
@@ -29,6 +30,10 @@ const MessagesWrapper = styled.div`
   flex: 1;
   width: 100%;
   overflow-y: scroll;
+`;
+
+const EmptyMessage = styled.div`
+  padding: 0 0 7rem 0;
 `;
 
 const ChatRoom = () => {
@@ -79,7 +84,7 @@ const ChatRoom = () => {
     <Wrapper>
       <MessagesWrapper>
         {messagesList}
-        <div ref={endMessagesRef} />
+        <EmptyMessage ref={endMessagesRef} />
       </MessagesWrapper>
       <MessageForm username={login} handleDataCB={(message: MessageType) => socket.emit('message', message.text)} />
     </Wrapper>
