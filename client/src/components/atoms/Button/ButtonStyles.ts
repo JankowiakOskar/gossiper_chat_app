@@ -1,7 +1,9 @@
 import styled, { css } from 'styled-components';
+import { Color } from 'utils/types/enums';
 
 interface ButtonProps {
   readonly underline?: boolean;
+  readonly color?: Color;
 }
 
 const Button = styled.button<ButtonProps>`
@@ -15,6 +17,12 @@ const Button = styled.button<ButtonProps>`
   font-weight: bold;
   border: none;
   filter: drop-shadow(0px 4px 2px rgba(0, 0, 0, 0.25));
+
+  ${({ color }) =>
+    color &&
+    css`
+      background-color: ${({ theme }) => theme.colors[color]};
+    `}
 
   ${({ underline }) =>
     underline &&

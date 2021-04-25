@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const User = require("../model/User");
+const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const verify = require("./verifyToken");
@@ -52,7 +52,7 @@ router.post("/login", async (req, res) => {
 	res.header("auth-token", token).send({ login: user.login, authToken: token });
 });
 
-router.get("/checkLoggedIn", verify, async (req, res) => {
+router.post("/checkLoggedIn", verify, async (req, res) => {
 	const authToken = req.header("auth-token");
 	const userLogin = req.user.login;
 	res.send({ login: userLogin, authToken: authToken });

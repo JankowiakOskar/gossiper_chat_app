@@ -8,7 +8,6 @@ export const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme }) => theme.colors.lightBlue};
   box-shadow: ${({ theme }) => theme.boxShadow};
   border: none;
 `;

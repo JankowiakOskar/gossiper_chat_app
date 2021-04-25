@@ -1,8 +1,10 @@
 /* eslint-disable no-param-reassign */
 import axios from 'axios';
 import { saveItemInLS, getItemFromLS } from 'utils/storageHelpers';
+import { setAuthAxiosConfig } from 'services/authAxios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { AuthState, UserData, ErrorMessage } from './types';
+import { ErrorMessage } from 'utils/types/interfaces';
+import { AuthState, UserData } from './types';
 
 const initialState = {
   authToken: '',
@@ -10,18 +12,21 @@ const initialState = {
   isAuthenticate: false,
 } as AuthState;
 
-export const signUp = createAsyncThunk<AuthState, UserData>('auth/signUp', async (userData, { rejectWithValue }) => {
-  try {
-    const { data } = await axios.post('http://192.168.100.17:5000/api/user/register', userData);
-    return data;
-  } catch (err) {
-    const {
-      response: { data, code },
-    } = err;
-    const customErr = { code, errorMessage: data } as ErrorMessage;
-    return rejectWithValue(customErr);
-  }
-});
+export const signUp = createAsyncThunk<AuthState, UserData, { rejectValue: ErrorMessage }>(
+  'auth/signUp',
+  async (userData, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post('http://192.168.100.17:5000/api/user/register', userData);
+      return data;
+    } catch (err) {
+      const {
+        response: { data, code },
+      } = err;
+      const customErr = { code, errorMessage: data };
+      return rejectWithValue(customErr);
+    }
+  },
+);
 
 export const logIn = createAsyncThunk<AuthState, UserData, { rejectValue: ErrorMessage }>(
   'auth/logIn',
@@ -29,13 +34,14 @@ export const logIn = createAsyncThunk<AuthState, UserData, { rejectValue: ErrorM
     try {
       const { data } = await axios.post('http://192.168.100.17:5000/api/user/login', userData);
       const { authToken } = data;
-      saveItemInLS<string>('auth-token', authToken);
+      saveItemInLS('auth-token', authToken);
+      setAuthAxiosConfig(authToken);
       return data;
     } catch (err) {
       const {
         response: { data, code },
       } = err;
-      const customErr = { code, errorMessage: data } as ErrorMessage;
+      const customErr = { code, errorMessage: data };
       return rejectWithValue(customErr);
     }
   },
@@ -43,14 +49,9 @@ export const logIn = createAsyncThunk<AuthState, UserData, { rejectValue: ErrorM
 
 export const checkOutLoggedIn = createAsyncThunk('auth/checkOutLoggedIn', async (_, { rejectWithValue }) => {
   const authToken = getItemFromLS('auth-token');
-  if (authToken === null) return rejectWithValue({ errorMessage: 'You are logged out' } as ErrorMessage);
-  const config = {
-    headers: {
-      'auth-token': authToken,
-    },
-  };
+  setAuthAxiosConfig(authToken);
   try {
-    const { data } = await axios.get('http://192.168.100.17:5000/api/user/checkLoggedIn', config);
+    const { data } = await axios.post('http://192.168.100.17:5000/api/user/checkLoggedIn');
     return data;
   } catch (err) {
     const {
@@ -66,9 +67,10 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     logOut: state => {
-      localStorage.removeItem('auth-token');
       state.authToken = '';
       state.login = '';
+      localStorage.removeItem('auth-token');
+      setAuthAxiosConfig('');
     },
   },
   extraReducers: builder => {

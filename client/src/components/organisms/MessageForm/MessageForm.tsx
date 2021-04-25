@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { MessageType, UserType } from 'utils/types/types';
+import { MessageType, SocketUser } from 'utils/types/types';
 import ButtonSend from 'components/atoms/SendButton/SendButton';
-import InputMessage from 'components/atoms/InputMessage/InputMessage';
+import InputMessage from 'components/atoms/CustomInput/CustomInput';
 import { FormWrapper, Form } from './MessageFormStyles';
 
 type Props = {
   handleDataCB: (date: MessageType) => any;
-  username: UserType['name'];
+  username: SocketUser['user'];
 };
 
 const defaultMessage: MessageType = {

@@ -1,13 +1,10 @@
 import React from 'react';
-import { UserType, MessageType } from 'utils/types/types';
+import { MessageType } from 'utils/types/types';
 import { Direction } from 'utils/types/enums';
 import { MessageWrapper, MessageAuthor, MessageDate, MessageText } from './MessageStyles';
 
-export type MessageProps = {
-  text: MessageType['text'];
-  date: Date;
+type MessageProps = MessageType & {
   direction: Direction;
-  sender?: UserType['name'];
 };
 
 const Message = ({ text, date, direction, sender }: MessageProps) => {
@@ -19,7 +16,7 @@ const Message = ({ text, date, direction, sender }: MessageProps) => {
 
   return (
     <MessageWrapper direction={direction}>
-      {sender && <MessageAuthor>{sender}</MessageAuthor>}
+      <MessageAuthor direction={direction}>{sender}</MessageAuthor>
       <MessageDate>{formatDate(date)}</MessageDate>
       <MessageText>{text}</MessageText>
     </MessageWrapper>

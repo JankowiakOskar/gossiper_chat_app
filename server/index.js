@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const socket = require("socket.io");
 //Import Routes
 const authRoute = require("./routes/auth");
-const postRoute = require("./routes/posts");
+const chatRoomsRoute = require("./routes/chatRooms");
 const { createMessage } = require("./utils/message");
 
 mongoose.set("useUnifiedTopology", true);
@@ -16,8 +16,10 @@ dotenv.config();
 app.use(cors());
 
 //Connect to DB
-mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true }, () =>
-	console.log("Connected to DB"),
+mongoose.connect(
+	process.env.DB_CONNECT,
+	{ useCreateIndex: true, useNewUrlParser: true },
+	() => console.log("Connected to DB"),
 );
 
 //Middleware
@@ -25,7 +27,7 @@ app.use(express.json());
 
 //Route Middlewares
 app.use("/api/user", authRoute);
-app.use("/api/posts", postRoute);
+app.use("/api/chat", chatRoomsRoute);
 
 const PORT = 5000;
 const HOST = "192.168.100.17";
@@ -61,7 +63,7 @@ io.on("connect", (socket) => {
 		io.emit("message", newMsg);
 	});
 
-	socket.on("disconnect", (user) => {
+	socket.on("disconnect", () => {
 		const { name } = users.find((user) => user.id === socket.id);
 		const disconnectMsg = createMessage(
 			`${name} has left from chat room`,
@@ -70,5 +72,3 @@ io.on("connect", (socket) => {
 		socket.broadcast.emit("message", disconnectMsg);
 	});
 });
-
-console.log(server);

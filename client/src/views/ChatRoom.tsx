@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { UserType, MessageType } from 'utils/types/types';
+import { MessageType, SocketUser } from 'utils/types/types';
 import { Direction } from 'utils/types/enums';
 import { useAppSelector } from 'store';
 import { io, Socket } from 'socket.io-client';
@@ -38,7 +38,7 @@ const EmptyMessage = styled.div`
 
 const ChatRoom = () => {
   const { login } = useAppSelector(state => state.auth);
-  const [users, setUsers] = useState<UserType[]>([]);
+  const [users, setUsers] = useState<SocketUser[]>([]);
   const [messages, setMessages] = useState<MessageType[]>([]);
 
   const endMessagesRef = useRef<HTMLDivElement>(null);
@@ -86,7 +86,7 @@ const ChatRoom = () => {
         {messagesList}
         <EmptyMessage ref={endMessagesRef} />
       </MessagesWrapper>
-      <MessageForm username={login} handleDataCB={(message: MessageType) => socket.emit('message', message.text)} />
+      {login && <MessageForm username={login} handleDataCB={(message: MessageType) => socket.emit('message', message.text)} />}
     </Wrapper>
   );
 };

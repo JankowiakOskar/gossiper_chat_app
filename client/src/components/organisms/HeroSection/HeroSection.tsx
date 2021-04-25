@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Routes } from 'routes';
-import Button from 'components/atoms/Button/Button';
+import Button from 'components/atoms/Button/ButtonStyles';
 import CustomLink from 'components/atoms/CustomLink/CustomLink';
 import { ReactComponent as ChatHero } from 'assets/svgs/ChatHero.svg';
 
@@ -51,7 +51,7 @@ const HeroSection = () => (
         Join to one of free rooms or crate your own. App is totaly free, create an account and <Span>expand your contacts</Span>
       </Text>
       <StyledButton>
-        <CustomLink to={Routes.ChatChannels}>Start chatting</CustomLink>
+        <CustomLink to={Routes.ChatRooms}>Start chatting</CustomLink>
       </StyledButton>
     </DescriptionWrapper>
     <ChatHeroWrapper>

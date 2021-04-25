@@ -7,6 +7,7 @@ import PrivateRoute from 'providers/PrivateRoute';
 import MainLayout from 'layouts/MainLayout';
 import AuthPage from 'views/AuthPage';
 import Home from 'views/Home';
+import ChatRoomsPage from 'views/ChatRoomsPage/ChatRoomsPage';
 import ChatRoom from 'views/ChatRoom';
 
 smoothscroll.polyfill();
@@ -23,7 +24,8 @@ const Root = () => {
           <Switch location={location} key={location.pathname}>
             <Route exact path={Routes.Home} component={Home} />
             <Route path={Routes.Auth} component={AuthPage} />
-            <PrivateRoute path={Routes.ChatChannels} component={ChatRoom} />
+            <PrivateRoute path={Routes.ChatRooms} component={ChatRoomsPage} />
+            <PrivateRoute path={Routes.ChatRoom} component={ChatRoom} />
           </Switch>
         </AnimatePresence>
       </MainLayout>

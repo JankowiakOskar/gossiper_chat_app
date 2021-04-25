@@ -1,7 +1,4 @@
-export interface ErrorMessage {
-  code?: number;
-  errorMessage: string;
-}
+import { ErrorMessage } from 'utils/types/interfaces';
 
 export interface UserData {
   email: string;
@@ -11,7 +8,7 @@ export interface UserData {
 
 export interface AuthState {
   authToken: string;
-  login: string;
+  login: UserData['login'];
   isAuthenticate: boolean;
   error?: ErrorMessage;
 }

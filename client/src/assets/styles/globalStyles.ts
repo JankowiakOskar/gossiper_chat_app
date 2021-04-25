@@ -24,13 +24,8 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Space Mono', monospace;
   }
 
-  /* html,body {
-  position: fixed;
-  width: 100%; 
-  height: 100%;
-  overflow-y: auto;
-  }
-   */
+
+   
   h1, h2, h3, h4, h5, span, label, strong {
     margin: 0;
     font-family: 'BioRhyme', serif;

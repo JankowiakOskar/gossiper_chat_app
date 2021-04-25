@@ -1,29 +1,8 @@
-import styled from 'styled-components';
-import { motion, AnimationControls } from 'framer-motion';
+import { AnimationControls } from 'framer-motion';
 import CustomLink from 'components/atoms/CustomLink/CustomLink';
+import { ListElementType } from 'utils/types/types';
 
-const StyledList = styled.ul`
-  list-style: none;
-  max-width: 12rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-`;
-
-export const ListElement = styled(motion.li)`
-  margin: 1rem 0;
-  padding: 0.5rem;
-  font-weight: bold;
-  color: ${({ theme }) => theme.colors.white};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const StyledSpan = styled.span`
-  padding: 0 0 0 1rem;
-`;
+import { StyledList, StyledSpan, ListElement } from './ListStyles';
 
 export const listElementVariants = {
   initial: {
@@ -46,49 +25,52 @@ export const listElementVariants = {
   }),
 };
 
-export type ListElementType = {
-  name: string;
-  path?: string;
-  icon?: React.SVGProps<SVGSVGElement>;
-  clickHandler?: () => any;
-};
-
 type Props = {
   list: ListElementType[];
-  animationControls: AnimationControls;
+  animationControls?: AnimationControls;
 };
 
-const List: React.FC<Props> = ({ list, animationControls }) => {
-  const handleClick = (e: React.MouseEvent, callback?: () => any) => {
+type AnimationOptions<T> = {
+  custom: number;
+  initial: T;
+  animate: AnimationControls | undefined;
+};
+
+type GenerateAnimationProps = <T>(initialAnimationValues: T, i: number) => AnimationOptions<T>;
+
+const List: React.FC<Props> = ({ list, animationControls = undefined }) => {
+  const handleClick = (e: React.MouseEvent, callback: ListElementType['clickHandler']) => {
     if (!callback) return;
     callback();
   };
 
+  const createImperativeAnimationProps: GenerateAnimationProps = (initialAnimationValues, i) => ({
+    custom: i,
+    initial: initialAnimationValues,
+    animate: animationControls,
+  });
+
   return (
     <StyledList>
-      {list.map((el, index) => {
-        const { clickHandler } = el;
-
-        if (el.path)
+      {list.map(({ name, path, icon, clickHandler }: ListElementType, index: number) => {
+        if (path)
           return (
-            <ListElement key={el.name} custom={index} initial={listElementVariants.initial} animate={animationControls}>
-              <CustomLink to={el.path}>
-                {el.icon && el.icon}
-                <StyledSpan>{el.name}</StyledSpan>
+            <ListElement key={name} {...(animationControls && createImperativeAnimationProps(listElementVariants.initial, index))}>
+              <CustomLink to={path}>
+                {icon && icon}
+                <StyledSpan>{name}</StyledSpan>
               </CustomLink>
             </ListElement>
           );
 
         return (
           <ListElement
-            key={el.name}
-            custom={index}
-            initial={listElementVariants.initial}
-            animate={animationControls}
+            key={name}
+            {...(animationControls && createImperativeAnimationProps(listElementVariants.initial, index))}
             onClick={e => handleClick(e, clickHandler)}
           >
-            {el.icon && el.icon}
-            <StyledSpan>{el.name}</StyledSpan>
+            {icon && icon}
+            <StyledSpan>{name}</StyledSpan>
           </ListElement>
         );
       })}

@@ -1,11 +1,17 @@
 import styled, { css } from 'styled-components';
 import { Direction } from 'utils/types/enums';
 
-interface WrapperProps {
+interface MessageProps {
   readonly direction: Direction;
 }
 
-export const MessageWrapper = styled.div<WrapperProps>`
+const rightMessageStyles = css`
+  align-self: flex-end;
+  background-color: ${({ theme }) => theme.colors.lightBlue};
+  color: ${({ theme }) => theme.colors.white};
+`;
+
+export const MessageWrapper = styled.div<MessageProps>`
   margin: 1rem 0.5rem;
   padding: 1rem;
   width: fit-content;
@@ -15,14 +21,19 @@ export const MessageWrapper = styled.div<WrapperProps>`
   ${({ direction }) =>
     direction === Direction.Right &&
     css`
-      align-self: flex-end;
+      ${rightMessageStyles}
     `}
 `;
 
-export const MessageAuthor = styled.span`
+export const MessageAuthor = styled.span<MessageProps>`
   font-weight: bold;
   font-size: ${({ theme }) => theme.font.size.medium};
   color: ${({ theme }) => theme.colors.lightBlue};
+  ${({ direction }) =>
+    direction === Direction.Right &&
+    css`
+      color: ${({ theme }) => theme.colors.white};
+    `}
 `;
 
 export const MessageDate = styled.span`
@@ -30,6 +41,7 @@ export const MessageDate = styled.span`
 `;
 
 export const MessageText = styled.p`
+  margin: 0.5rem 0 0 0;
   display: block;
   max-width: 20rem;
   word-wrap: break-word;

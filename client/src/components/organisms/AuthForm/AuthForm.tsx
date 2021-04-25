@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Routes } from 'routes';
 import { useAppDispatch, useAppSelector } from 'store';
@@ -7,11 +7,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { signUp, logIn } from 'features/auth/authSlice';
 import { UserData } from 'features/auth/types';
-import styled, { css, ThemeContext } from 'styled-components';
+import { Color } from 'utils/types/enums';
+import styled, { css } from 'styled-components';
 import InputField from 'components/atoms/InputField/InputField';
 import Brand from 'components/atoms/Brand/Brand';
-import Button from 'components/atoms/Button/Button';
-import Loader from 'react-loader-spinner';
+import Button from 'components/atoms/Button/ButtonStyles';
+import LoaderComponent from 'components/molecules/LoaderComponent/LoaderComponent';
 
 interface WrapperProps {
   readonly isAuthenticate: boolean;
@@ -89,18 +90,16 @@ const AuthForm = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const { isAuthenticate } = useAppSelector(state => state.auth);
-  const themeContext = useContext(ThemeContext);
 
-  const switchMode = (): void => setRegister(prevState => !prevState);
+  const switchFormType = (): void => setRegister(prevState => !prevState);
 
-  const onSubmit = async (data: UserData): Promise<void> => {
-    const { email, login, password } = data;
+  const onSubmit = async ({ login, ...rest }: UserData): Promise<void> => {
     if (isRegistered) {
-      const resultLogIn = await dispatch(logIn({ email, password }));
+      const resultLogIn = await dispatch(logIn({ ...rest }));
       logIn.fulfilled.match(resultLogIn) && history.push(Routes.Home);
     } else {
-      const resultSignUp = await dispatch(signUp({ email, login, password }));
-      signUp.fulfilled.match(resultSignUp) && switchMode();
+      const resultSignUp = await dispatch(signUp({ login, ...rest }));
+      signUp.fulfilled.match(resultSignUp) && switchFormType();
     }
     reset();
   };
@@ -136,12 +135,12 @@ const AuthForm = () => {
           {isRegistered ? 'Log In' : 'Create account'}
         </StyledButton>
       </Form>
-      <Button role='button' onClick={switchMode} underline disabled={isAuthenticate}>
+      <Button role='button' onClick={switchFormType} underline disabled={isAuthenticate}>
         {isRegistered ? 'Create new account' : 'I want sign in'}
       </Button>
       {isAuthenticate && (
         <LoaderWrapper>
-          <Loader type='ThreeDots' color={themeContext.colors.lightBlue} height={70} width={70} />{' '}
+          <LoaderComponent loaderColor={Color.LightBlue} />{' '}
         </LoaderWrapper>
       )}
     </Wrapper>

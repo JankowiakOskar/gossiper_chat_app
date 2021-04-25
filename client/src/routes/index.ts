@@ -1,7 +1,8 @@
 enum Routes {
   Home = '/',
   Auth = '/auth',
-  ChatChannels = '/chat/channels',
+  ChatRooms = '/chat/chatrooms',
+  ChatRoom = '/chat/chatrooms/:id',
 }
 
 export { Routes };

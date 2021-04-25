@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 
-const AuthPage = (): JSX.Element => (
+const AuthPage = () => (
   <TransitionProvider>
     <Wrapper>
       <AuthForm />

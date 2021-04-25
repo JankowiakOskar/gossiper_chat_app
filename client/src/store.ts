@@ -1,16 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import authReducer from 'features/auth/authSlice';
+import chatRoomsReducer from 'features/chatRooms/chatRoomsSlice';
 
-// Use `configureStore` function to create the store:
 export const store = configureStore({
   reducer: {
     // Specify our reducer in the reducers object:
     auth: authReducer,
+    chatRooms: chatRoomsReducer,
   },
 });
 
-// Define the `RootState` as the return type:
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
