@@ -1,8 +1,13 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Button from 'components/atoms/Button/ButtonStyles';
+import { motion } from 'framer-motion';
 import { ReactComponent as ChatSVG } from 'assets/svgs/ChatSVG.svg';
 
-export const Wrapper = styled.figure`
+interface WrapperProps {
+  readonly isExpanded: boolean;
+}
+
+export const Wrapper = styled(motion.figure)<WrapperProps>`
   padding: 1rem;
   width: 30rem;
   height: 18rem;
@@ -13,6 +18,16 @@ export const Wrapper = styled.figure`
   border: 1px solid ${({ theme }) => theme.colors.darkGrey};
   box-shadow: ${({ theme }) => theme.boxShadow};
   text-align: center;
+
+  ${({ isExpanded }) =>
+    isExpanded &&
+    css`
+      background-color: ${({ theme }) => theme.colors.white};
+      /* height: 30rem; */
+      /* width: 85%;
+      max-height: 35rem;
+      max-width: 70rem; */
+    `}
 `;
 
 export const RoomTitle = styled.h3`

@@ -22,6 +22,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     font-size: 1.6rem;
     font-family: 'Space Mono', monospace;
+    overflow-x: hidden;
   }
 
 

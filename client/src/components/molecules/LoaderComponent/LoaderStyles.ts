@@ -1,14 +1,18 @@
 import styled from 'styled-components';
 
 export const LoaderWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  flex-direction: column;
-  align-items: center;
+  position: relative;
+  position: fixed;
+  width: fit-content;
+  /* max-width: 30rem; */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
 `;
 
 export const LoadingMessage = styled.p`
-  margin: 1.2rem 0 0 0;
+  margin: 1rem 0 0 0;
   font-size: ${({ theme }) => theme.font.size.medium};
   font-weight: bold;
 `;

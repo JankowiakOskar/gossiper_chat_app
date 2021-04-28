@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { ErrorMessage } from 'utils/types/interfaces';
+import { sleeper } from 'utils';
 import { ChatRoomsState, ChatRoom } from './types';
 
 const initialState = {
@@ -14,6 +15,7 @@ const initialState = {
 
 export const fetchChatRooms = createAsyncThunk<ChatRoom[]>('chatrooms/fetchById', async (_, { rejectWithValue }) => {
   try {
+    await sleeper(1000);
     const {
       data: { chatRooms },
     } = await axios.get('http://192.168.100.17:5000/api/chat/chatrooms');

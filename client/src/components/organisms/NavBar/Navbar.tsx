@@ -2,9 +2,8 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from 'store';
 import { logOut } from 'features/auth/authSlice';
-import styled from 'styled-components';
 import { ListElementType } from 'utils/types/types';
-import { motion, useAnimation } from 'framer-motion';
+import { useAnimation } from 'framer-motion';
 import { Routes } from 'routes';
 import { ReactComponent as HomeSVG } from 'assets/svgs/HomeSVG.svg';
 import { ReactComponent as ChatIcon } from 'assets/svgs/ChatSVG.svg';
@@ -13,28 +12,7 @@ import CustomLink from 'components/atoms/CustomLink/CustomLink';
 import Brand from 'components/atoms/Brand/Brand';
 import BurgerMenu from 'components/atoms/BurgerMenu/BurgerMenu';
 import List, { listElementVariants } from 'components/molecules/List/List';
-
-const StyledNavBar = styled(motion.div)`
-  padding: 1rem 2rem;
-  width: 100%;
-  height: 7.5rem;
-  background-color: ${({ theme }) => theme.colors.lightBlue};
-  box-shadow: ${({ theme }) => theme.boxShadow};
-  transform-origin: center top;
-`;
-
-const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const Nav = styled.nav`
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-`;
+import { StyledNavBar, Wrapper, Nav } from './NavBarStyles';
 
 const wrapperVariants = {
   collapsed: {

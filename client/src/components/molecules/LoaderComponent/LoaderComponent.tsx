@@ -17,6 +17,7 @@ const LoaderComponent: React.FC<LoaderProps> = ({ loadingMessage, loaderColor })
         height={70}
         width={70}
       />
+
       {loadingMessage && <LoadingMessage>{loadingMessage}</LoadingMessage>}
     </LoaderWrapper>
   );
