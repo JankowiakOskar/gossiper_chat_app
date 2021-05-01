@@ -43,15 +43,16 @@ const ChatRoomsPage = () => {
   const selectedItem = selectedName && getItemByName(chatRooms, selectedName);
 
   return (
-    <Wrapper>
-      <TransitionProvider>
+    <TransitionProvider>
+      <Wrapper>
         <Heading title='Chat Rooms' subtitle='Join to chat or create own room' />
         <LoaderProvider isLoading={isLoadingRooms} loadingMessage='Loading available chats...'>
           <AnimateSharedLayout type='crossfade'>
             <RoomsSection layout>
-              {chatRooms.map(({ name, description, activeUsers, tags, isPrivate }, index) => (
+              {chatRooms.map(({ id, name, description, activeUsers, tags, isPrivate }, index) => (
                 <StyledRoomCard
-                  key={name}
+                  key={id}
+                  id={id}
                   name={name}
                   description={description}
                   tags={tags}
@@ -67,7 +68,8 @@ const ChatRoomsPage = () => {
               {selectedName && selectedItem && (
                 <Overlay variants={overlayVariants} initial={false} animate='animate' exit='hidden' layout>
                   <StyledRoomCard
-                    key={selectedItem.name}
+                    key={selectedItem.id}
+                    id={selectedItem.id}
                     name={selectedItem.name}
                     description={selectedItem.description}
                     tags={selectedItem.tags}
@@ -81,11 +83,11 @@ const ChatRoomsPage = () => {
             </AnimatePresence>
           </AnimateSharedLayout>
         </LoaderProvider>
-      </TransitionProvider>
-      <StyledButton>
-        <IconPlus />
-      </StyledButton>
-    </Wrapper>
+        <StyledButton>
+          <IconPlus />
+        </StyledButton>
+      </Wrapper>
+    </TransitionProvider>
   );
 };
 

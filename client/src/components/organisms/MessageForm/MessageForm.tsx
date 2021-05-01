@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { MessageType, SocketUser } from 'utils/types/types';
+import { Color } from 'utils/types/enums';
 import ButtonSend from 'components/atoms/SendButton/SendButton';
 import InputMessage from 'components/atoms/CustomInput/CustomInput';
 import { FormWrapper, Form } from './MessageFormStyles';
@@ -44,7 +45,7 @@ const MessageForm = ({ handleDataCB, username }: Props) => {
     <FormWrapper>
       <Form onSubmit={e => handleSubmit(e)}>
         <InputMessage type='text' placeholder='Type new message' value={typingMessage.text} onChange={e => handleChange(e, username)} />
-        <ButtonSend type='submit' />
+        <ButtonSend color={Color.LightBlue} type='submit' />
       </Form>
     </FormWrapper>
   );

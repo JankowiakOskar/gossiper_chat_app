@@ -1,11 +1,12 @@
-import { Button, PaperPlaneIcon } from './SendButtonStyles';
+import { ButtonProps } from 'components/atoms/Button/ButtonStyles';
+import { StyledSendButton, PaperPlaneIcon } from './SendButtonStyles';
 
-type Props = React.ButtonHTMLAttributes<HTMLButtonElement>;
+type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & ButtonProps;
 
 const SendButton = (props: Props) => (
-  <Button {...props}>
+  <StyledSendButton {...props}>
     <PaperPlaneIcon />
-  </Button>
+  </StyledSendButton>
 );
 
 export default SendButton;

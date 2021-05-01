@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Color } from 'utils/types/enums';
 
-interface ButtonProps {
+export interface ButtonProps {
   readonly underline?: boolean;
   readonly color?: Color;
 }

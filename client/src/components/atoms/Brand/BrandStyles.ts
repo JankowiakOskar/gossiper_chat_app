@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { ReactComponent as Logo } from 'assets/svgs/Logo.svg';
 
 export interface StyledProps {
-  readonly onNavBar: boolean;
+  readonly $onNavBar: boolean;
 }
 
 export const Wrapper = styled.div`
@@ -13,12 +13,12 @@ export const Wrapper = styled.div`
 export const BrandTitle = styled.strong<StyledProps>`
   margin-left: 1rem;
   font-size: ${({ theme }) => theme.font.size.large};
-  color: ${({ theme, onNavBar }) => onNavBar && theme.colors.white};
+  color: ${({ theme, $onNavBar }) => $onNavBar && theme.colors.white};
 `;
 
 export const LogoSVG = styled(Logo)<StyledProps>`
-  ${({ onNavBar }) =>
-    onNavBar &&
+  ${({ $onNavBar }) =>
+    $onNavBar &&
     css`
       width: 5rem;
       height: 5rem;

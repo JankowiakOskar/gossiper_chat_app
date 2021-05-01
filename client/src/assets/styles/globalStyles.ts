@@ -31,6 +31,10 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     font-family: 'BioRhyme', serif;
   }
+
+  p {
+    color: ${({ theme }) => theme.colors.textGrey}
+  }
   
   button {
     padding: 0;

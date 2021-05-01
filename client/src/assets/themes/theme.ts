@@ -1,7 +1,12 @@
 import { DefaultTheme } from 'styled-components';
 
+interface MediaQueryProps {
+  [key: string]: number;
+}
+
 declare module 'styled-components' {
   export interface DefaultTheme {
+    mediaQuery: { [key: string]: string };
     colors: {
       white: string;
       black: string;
@@ -12,6 +17,7 @@ declare module 'styled-components' {
       red: string;
       grey: string;
       darkGrey: string;
+      textGrey: string;
     };
     font: {
       size: {
@@ -26,7 +32,22 @@ declare module 'styled-components' {
   }
 }
 
+const breakpoints: MediaQueryProps = {
+  smallPhone: 320,
+  bigPhone: 400,
+  tablet: 767,
+  bigTablet: 1020,
+  desktop: 1150,
+  bigDesktop: 1440,
+};
+
+export const mediaQuery = Object.keys(breakpoints).reduce((acc, breakpoint) => {
+  acc[breakpoint] = `@media (min-width: ${breakpoints[breakpoint]}px)`;
+  return acc;
+}, {} as Record<keyof MediaQueryProps, string>);
+
 export const defaultTheme: DefaultTheme = {
+  mediaQuery,
   colors: {
     white: '#ffffff',
     black: '#000000',
@@ -37,6 +58,7 @@ export const defaultTheme: DefaultTheme = {
     red: '#e02c2c',
     grey: '#eaeaea',
     darkGrey: '#ABA3A3',
+    textGrey: '#807474',
   },
   font: {
     size: {

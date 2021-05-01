@@ -18,15 +18,12 @@ export const Wrapper = styled(motion.figure)<WrapperProps>`
   border: 1px solid ${({ theme }) => theme.colors.darkGrey};
   box-shadow: ${({ theme }) => theme.boxShadow};
   text-align: center;
+  cursor: pointer;
 
   ${({ isExpanded }) =>
     isExpanded &&
     css`
       background-color: ${({ theme }) => theme.colors.white};
-      /* height: 30rem; */
-      /* width: 85%;
-      max-height: 35rem;
-      max-width: 70rem; */
     `}
 `;
 

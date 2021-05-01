@@ -24,7 +24,7 @@ const Root = () => {
           <Switch location={location} key={location.pathname}>
             <Route exact path={Routes.Home} component={Home} />
             <Route path={Routes.Auth} component={AuthPage} />
-            <PrivateRoute path={Routes.ChatRooms} component={ChatRoomsPage} />
+            <PrivateRoute exact path={Routes.ChatRooms} component={ChatRoomsPage} />
             <PrivateRoute path={Routes.ChatRoom} component={ChatRoom} />
           </Switch>
         </AnimatePresence>

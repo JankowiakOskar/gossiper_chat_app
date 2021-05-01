@@ -6,8 +6,8 @@ type Props = {
 
 const Brand: React.FC<Props> = ({ onNavBar = false }) => (
   <Wrapper>
-    <LogoSVG onNavBar={onNavBar} />
-    <BrandTitle onNavBar={onNavBar}>Gossiper</BrandTitle>
+    <LogoSVG $onNavBar={onNavBar} />
+    <BrandTitle $onNavBar={onNavBar}>Gossiper</BrandTitle>
   </Wrapper>
 );
 

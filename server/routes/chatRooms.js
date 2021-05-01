@@ -7,7 +7,7 @@ router.get("/chatrooms", verify, async (req, res) => {
 	try {
 		const allRoomsCollection = await ChatRoom.find({});
 		const roomsWithPrivateProp = allRoomsCollection.map((room) => {
-			const { password, ...rest } = room.toObject();
+			const { password, ...rest } = room.toJSON();
 			return password
 				? { ...rest, isPrivate: true }
 				: { ...rest, isPrivate: false };

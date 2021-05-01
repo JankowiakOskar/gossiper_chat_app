@@ -22,4 +22,8 @@ const roomSchema = new mongoose.Schema({
 	},
 });
 
+roomSchema.set("toJSON", {
+	virtuals: true,
+});
+
 module.exports = mongoose.model("Room", roomSchema);

@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { MessageType, SocketUser } from 'utils/types/types';
 import { Direction } from 'utils/types/enums';
@@ -38,6 +39,8 @@ const EmptyMessage = styled.div`
 
 const ChatRoom = () => {
   const { login } = useAppSelector(state => state.auth);
+  const { id } = useParams<{ id: string }>();
+  console.log(id);
   const [users, setUsers] = useState<SocketUser[]>([]);
   const [messages, setMessages] = useState<MessageType[]>([]);
 

@@ -45,5 +45,6 @@ export const MessageText = styled.p`
   display: block;
   max-width: 20rem;
   word-wrap: break-word;
+  color: ${({ theme }) => theme.colors.white};
   font-size: ${({ theme }) => theme.font.size.small};
 `;

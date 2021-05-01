@@ -1,6 +1,7 @@
 import { ErrorMessage } from 'utils/types/interfaces';
 
 export interface ChatRoom {
+  id: string;
   name: string;
   description: string;
   activeUsers: string[];
