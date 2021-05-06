@@ -14,6 +14,13 @@ export const BrandTitle = styled.strong<StyledProps>`
   margin-left: 1rem;
   font-size: ${({ theme }) => theme.font.size.large};
   color: ${({ theme, $onNavBar }) => $onNavBar && theme.colors.white};
+  transition: all 0.2s ease-in-out;
+
+  ${({ theme }) => theme.mediaQuery.desktop} {
+    &:hover {
+      color: ${({ theme }) => theme.colors.goldenYellow};
+    }
+  }
 `;
 
 export const LogoSVG = styled(Logo)<StyledProps>`

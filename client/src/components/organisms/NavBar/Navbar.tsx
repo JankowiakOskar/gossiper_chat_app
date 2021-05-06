@@ -1,46 +1,44 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from 'store';
+import useWindow from 'hooks/useWindow';
 import { logOut } from 'features/auth/authSlice';
 import { ListElementType } from 'utils/types/types';
-import { useAnimation } from 'framer-motion';
 import { Routes } from 'routes';
 import { ReactComponent as HomeSVG } from 'assets/svgs/HomeSVG.svg';
 import { ReactComponent as ChatIcon } from 'assets/svgs/ChatSVG.svg';
 import { ReactComponent as PadlockSVG } from 'assets/svgs/PadlockSVG.svg';
+import { breakpoints } from 'assets/themes/theme';
 import CustomLink from 'components/atoms/CustomLink/CustomLink';
 import Brand from 'components/atoms/Brand/Brand';
 import BurgerMenu from 'components/atoms/BurgerMenu/BurgerMenu';
-import List, { listElementVariants } from 'components/molecules/List/List';
-import { StyledNavBar, Wrapper, Nav } from './NavBarStyles';
+import List from 'components/molecules/List/List';
+import { StyledNavBar, Wrapper, InnerWrapper, Nav } from './NavBarStyles';
+
+const transition = {
+  type: 'spring',
+  stiffness: 100,
+  mass: 0.7,
+};
 
 const wrapperVariants = {
   collapsed: {
     height: 75,
-    transition: {
-      type: 'spring',
-      stiffness: 100,
-      mass: 0.7,
-    },
+    transition: { ...transition, delay: 0.3 },
   },
   expanded: {
     height: 250,
-    transition: {
-      type: 'spring',
-      stiffness: 100,
-      mass: 0.7,
-    },
+    transition,
   },
 };
 
 const NavBar = () => {
   const [isOpenNav, setOpenNav] = useState(false);
-  const [isAnimate, setAnimate] = useState(false);
-  const wrapperAnimation = useAnimation();
-  const listElAnimation = useAnimation();
   const location = useLocation();
   const authToken = useAppSelector(state => state.auth.authToken);
   const dispatch = useAppDispatch();
+  const { windowWidth } = useWindow();
+  const isBigDevice = windowWidth >= breakpoints.bigTablet;
 
   const navList: ListElementType[] = [
     { name: 'Home', path: Routes.Home, icon: <HomeSVG /> },
@@ -49,41 +47,25 @@ const NavBar = () => {
   const logoutEl = { name: 'Logout', icon: <PadlockSVG />, clickHandler: () => dispatch(logOut()) };
   const loginEl = { name: 'Log In', path: Routes.Auth, icon: <PadlockSVG /> };
 
-  const toggleNavBar = () => {
-    if (isAnimate) return;
-    setOpenNav(prevState => !prevState);
-  };
-
-  useEffect(() => {
-    const sequence = async () => {
-      setAnimate(prevState => !prevState);
-      if (isOpenNav) {
-        await wrapperAnimation.start(wrapperVariants.expanded);
-        await listElAnimation.start(listElementVariants.expanded);
-      } else {
-        await listElAnimation.start(listElementVariants.collapsed);
-        await wrapperAnimation.start(wrapperVariants.collapsed);
-      }
-      setAnimate(prevState => !prevState);
-    };
-    sequence();
-  }, [isOpenNav, authToken, wrapperAnimation, listElAnimation]);
+  const toggleNavBar = () => setOpenNav(prevState => !prevState);
 
   useEffect(() => {
     setOpenNav(false);
   }, [location.pathname]);
 
   return (
-    <StyledNavBar variants={wrapperVariants} initial={false} animate={wrapperAnimation}>
-      <Wrapper>
-        <CustomLink to={Routes.Home}>
-          <Brand onNavBar />
-        </CustomLink>
-        <BurgerMenu isOpen={isOpenNav} setOpen={toggleNavBar} />
-      </Wrapper>
-      <Nav>
-        <List list={authToken ? [...navList, logoutEl] : [...navList, loginEl]} animationControls={listElAnimation} />
-      </Nav>
+    <StyledNavBar variants={wrapperVariants} initial={false} animate={isOpenNav ? 'expanded' : 'collapsed'}>
+      <InnerWrapper>
+        <Wrapper>
+          <CustomLink to={Routes.Home}>
+            <Brand onNavBar />
+          </CustomLink>
+          <BurgerMenu isOpen={isOpenNav} setOpen={toggleNavBar} />
+        </Wrapper>
+        <Nav>
+          <List list={authToken ? [...navList, logoutEl] : [...navList, loginEl]} isExpanded={isBigDevice ? true : isOpenNav} />
+        </Nav>
+      </InnerWrapper>
     </StyledNavBar>
   );
 };

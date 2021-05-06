@@ -17,6 +17,10 @@ const OuterWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.lightGreen};
   border-radius: 1rem;
   box-shadow: ${({ theme }) => theme.boxShadow};
+
+  ${({ theme }) => theme.mediaQuery.bigTablet} {
+    display: none;
+  }
 `;
 
 const BurgerWrapper = styled.div`

@@ -9,8 +9,9 @@ interface WrapperProps {
 
 export const Wrapper = styled(motion.figure)<WrapperProps>`
   padding: 1rem;
-  width: 30rem;
-  height: 18rem;
+  width: 90vw;
+  max-width: 33rem;
+  height: 19rem;
   display: flex;
   flex-direction: column;
   align-items: center;

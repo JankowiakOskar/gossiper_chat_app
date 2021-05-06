@@ -18,6 +18,7 @@ declare module 'styled-components' {
       grey: string;
       darkGrey: string;
       textGrey: string;
+      goldenYellow: string;
     };
     font: {
       size: {
@@ -32,7 +33,7 @@ declare module 'styled-components' {
   }
 }
 
-const breakpoints: MediaQueryProps = {
+export const breakpoints: MediaQueryProps = {
   smallPhone: 320,
   bigPhone: 400,
   tablet: 767,
@@ -59,6 +60,7 @@ export const defaultTheme: DefaultTheme = {
     grey: '#eaeaea',
     darkGrey: '#ABA3A3',
     textGrey: '#807474',
+    goldenYellow: '#F4B844',
   },
   font: {
     size: {

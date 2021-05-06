@@ -19,12 +19,21 @@ interface WrapperProps {
 }
 
 const Wrapper = styled.div<WrapperProps>`
-  max-height: 50rem;
+  height: fit-content;
   max-width: 50rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+
+  ${({ theme }) => theme.mediaQuery.bigTablet} {
+    padding: 3rem 2rem;
+    max-width: none;
+    width: 40rem;
+    border-radius: 2.5rem;
+    box-shadow: ${({ theme }) => theme.boxShadow};
+    border: 1px solid ${({ theme }) => theme.colors.darkGrey};
+  }
 
   ${({ isAuthenticate }) =>
     isAuthenticate &&

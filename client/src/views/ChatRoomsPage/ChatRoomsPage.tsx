@@ -45,7 +45,7 @@ const ChatRoomsPage = () => {
   return (
     <TransitionProvider>
       <Wrapper>
-        <Heading title='Chat Rooms' subtitle='Join to chat or create own room' />
+        <Heading title='Chat Rooms' subtitle='Join to one of following chats or create own room' />
         <LoaderProvider isLoading={isLoadingRooms} loadingMessage='Loading available chats...'>
           <AnimateSharedLayout type='crossfade'>
             <RoomsSection layout>

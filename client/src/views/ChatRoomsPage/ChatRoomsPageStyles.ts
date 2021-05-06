@@ -4,23 +4,43 @@ import RoomCard from 'components/molecules/RoomCard/RoomCard';
 import { motion } from 'framer-motion';
 
 export const Wrapper = styled.div`
-  padding: 0 2rem;
+  padding: 1rem 2rem;
+  margin: 0 auto;
   width: 100%;
   height: 100%;
   overflow-x: hidden;
 `;
 
 export const RoomsSection = styled(motion.section)`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  padding: 2rem 0;
+  display: grid;
   align-items: center;
+  justify-items: center;
+  gap: 2.5rem;
+
+  ${({ theme }) => theme.mediaQuery.tablet} {
+    padding: 4rem 0;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  ${({ theme }) => theme.mediaQuery.desktop} {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+  }
 `;
 
 export const StyledRoomCard = styled(RoomCard)`
   && {
-    margin: 2rem 0;
+    ${({ theme }) => theme.mediaQuery.tablet} {
+      max-width: 35rem;
+      height: 22rem;
+    }
+
+    ${({ theme }) => theme.mediaQuery.bigTablet} {
+      max-width: 45rem;
+      height: 25rem;
+    }
   }
 `;
 

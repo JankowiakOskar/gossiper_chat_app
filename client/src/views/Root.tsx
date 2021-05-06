@@ -6,7 +6,7 @@ import smoothscroll from 'smoothscroll-polyfill';
 import PrivateRoute from 'providers/PrivateRoute';
 import MainLayout from 'layouts/MainLayout';
 import AuthPage from 'views/AuthPage';
-import Home from 'views/Home';
+import Home from 'views/Home/Home';
 import ChatRoomsPage from 'views/ChatRoomsPage/ChatRoomsPage';
 import ChatRoom from 'views/ChatRoom';
 
