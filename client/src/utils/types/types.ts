@@ -23,3 +23,7 @@ export type LoaderType = {
   loadingMessage?: String;
   loaderColor?: Color;
 };
+
+export type Ref<T> = {
+  current: T;
+};

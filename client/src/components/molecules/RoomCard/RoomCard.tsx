@@ -3,6 +3,7 @@ import { ChatRoom } from 'features/chatRooms/types';
 import Tags from 'components/molecules/Tags/Tags';
 import { AnimatePresence } from 'framer-motion';
 import useAccessToRoom from 'hooks/useAccessToRoom';
+import { forwardRef } from 'react';
 import { Wrapper, RoomTitle, RoomDescription, StyledButton, RoomDownBar, ChatIcon, HighlightText } from './RoomCardStyles';
 
 const roomCardVariants = {
@@ -41,55 +42,47 @@ type RoomCardProps = Omit<ChatRoom, 'activeUsers'> & {
   isExpanded: boolean;
 };
 
-const RoomCard: React.FC<RoomCardProps> = ({
-  index,
-  id,
-  name,
-  description,
-  activeUsers,
-  tags,
-  isPrivate,
-  className = '',
-  handleCB,
-  isExpanded,
-}) => {
-  const { getIntoRoom } = useAccessToRoom({ id, isPrivate });
+const RoomCard = forwardRef<HTMLDivElement, RoomCardProps>(
+  ({ index, id, name, description, activeUsers, tags, isPrivate, className = '', handleCB, isExpanded }, ref) => {
+    const { getIntoRoom } = useAccessToRoom({ id, isPrivate });
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
-    e.stopPropagation();
-    getIntoRoom();
-  };
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
+      e.stopPropagation();
+      getIntoRoom();
+    };
 
-  return (
-    <Wrapper
-      isExpanded={isExpanded}
-      layoutId={name}
-      className={className}
-      custom={index}
-      variants={!isExpanded ? roomCardVariants : expandedVariants}
-      initial='hidden'
-      animate='visible'
-      onClick={handleCB && handleCB}
-    >
-      <RoomTitle>{name}</RoomTitle>
-      <RoomDescription>{description}</RoomDescription>
-      <AnimatePresence exitBeforeEnter initial={false}>
-        {isExpanded && (
-          <div>
-            <HighlightText>Tags:</HighlightText>
-            <Tags tags={tags} />
-          </div>
-        )}
-      </AnimatePresence>
-      <RoomDescription>{activeUsers}</RoomDescription>
-      <RoomDescription>{isPrivate}</RoomDescription>
-      <RoomDownBar>
-        <StyledButton color={Color.LightBlue} onClick={handleClick}>
-          Join <ChatIcon />
-        </StyledButton>
-      </RoomDownBar>
-    </Wrapper>
-  );
-};
+    return (
+      <Wrapper
+        ref={ref}
+        isExpanded={isExpanded}
+        layoutId={name}
+        className={className}
+        custom={index}
+        variants={!isExpanded ? roomCardVariants : expandedVariants}
+        initial='hidden'
+        animate='visible'
+        onClick={handleCB && handleCB}
+      >
+        <RoomTitle>{name}</RoomTitle>
+        <RoomDescription>{description}</RoomDescription>
+        <AnimatePresence exitBeforeEnter initial={false}>
+          {isExpanded && (
+            <div>
+              <HighlightText>Tags:</HighlightText>
+              <Tags tags={tags} />
+            </div>
+          )}
+        </AnimatePresence>
+        <RoomDescription>{activeUsers}</RoomDescription>
+        <RoomDescription>{isPrivate}</RoomDescription>
+        <RoomDownBar>
+          <StyledButton color={Color.LightBlue} onClick={handleClick}>
+            Join <ChatIcon />
+          </StyledButton>
+        </RoomDownBar>
+      </Wrapper>
+    );
+  },
+);
 
 export default RoomCard;

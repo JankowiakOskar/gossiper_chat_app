@@ -8,5 +8,5 @@ export const StyledSidePanel = styled.div`
   border: 0.1rem solid ${({ theme }) => theme.colors.darkBlue};
   color: ${({ theme }) => theme.colors.white};
   border-right: none;
-  box-shadow: -0.5px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: -0.5px 0px 7px 0px rgba(0, 0, 0, 0.75);
 `;

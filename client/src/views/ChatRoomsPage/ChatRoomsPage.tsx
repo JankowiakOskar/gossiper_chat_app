@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from 'store';
+import useOutsideClick from 'hooks/useOutsideClick';
 import { AnimateSharedLayout, AnimatePresence } from 'framer-motion';
 import { fetchChatRooms } from 'features/chatRooms/chatRoomsSlice';
 import { getItemByName } from 'utils';
@@ -36,6 +37,10 @@ const ChatRoomsPage = () => {
   const dispatch = useAppDispatch();
   const { chatRooms, isLoading: isLoadingRooms } = useAppSelector(state => state.chatRooms);
 
+  const expandedCardRef = useRef<HTMLDivElement>(null);
+
+  useOutsideClick(expandedCardRef, () => setSelectedName(''));
+
   useEffect(() => {
     dispatch(fetchChatRooms());
   }, [dispatch]);
@@ -68,6 +73,7 @@ const ChatRoomsPage = () => {
               {selectedName && selectedItem && (
                 <Overlay variants={overlayVariants} initial={false} animate='animate' exit='hidden' layout>
                   <StyledRoomCard
+                    ref={expandedCardRef}
                     key={selectedItem.id}
                     id={selectedItem.id}
                     name={selectedItem.name}
@@ -76,7 +82,6 @@ const ChatRoomsPage = () => {
                     activeUsers={selectedItem.tags.length}
                     isPrivate={selectedItem.isPrivate}
                     isExpanded
-                    handleCB={() => setSelectedName('')}
                   />
                 </Overlay>
               )}
