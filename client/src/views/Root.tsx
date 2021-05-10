@@ -8,26 +8,28 @@ import MainLayout from 'layouts/MainLayout';
 import AuthPage from 'views/AuthPage';
 import Home from 'views/Home/Home';
 import ChatRoomsPage from 'views/ChatRoomsPage/ChatRoomsPage';
-import ChatRoom from 'views/ChatRoom';
+import ChatRoom from 'views/ChatRoom/ChatRoom';
+import LoaderProvider from 'providers/LoaderProvider';
 
 smoothscroll.polyfill();
 
 const Root = () => {
   const isChecking = useCheckLogged();
   const location = useLocation();
-  if (isChecking) return <div>Loading...</div>;
 
   return (
     <div className='App'>
       <MainLayout>
-        <AnimatePresence exitBeforeEnter initial={false}>
-          <Switch location={location} key={location.pathname}>
-            <Route exact path={Routes.Home} component={Home} />
-            <Route path={Routes.Auth} component={AuthPage} />
-            <PrivateRoute exact path={Routes.ChatRooms} component={ChatRoomsPage} />
-            <PrivateRoute path={Routes.ChatRoom} component={ChatRoom} />
-          </Switch>
-        </AnimatePresence>
+        <LoaderProvider isLoading={isChecking} loadingMessage='Please wait, loading...'>
+          <AnimatePresence exitBeforeEnter initial={false}>
+            <Switch location={location} key={location.pathname}>
+              <Route exact path={Routes.Home} component={Home} />
+              <Route path={Routes.Auth} component={AuthPage} />
+              <PrivateRoute exact path={Routes.ChatRooms} component={ChatRoomsPage} />
+              <PrivateRoute path={Routes.ChatRoom} component={ChatRoom} />
+            </Switch>
+          </AnimatePresence>
+        </LoaderProvider>
       </MainLayout>
     </div>
   );

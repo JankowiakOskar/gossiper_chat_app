@@ -4,7 +4,6 @@ export const LoaderWrapper = styled.div`
   position: relative;
   position: fixed;
   width: fit-content;
-  /* max-width: 30rem; */
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

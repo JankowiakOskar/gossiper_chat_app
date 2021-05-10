@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 export const Wrapper = styled.div`
   padding: 1rem 2rem;
   margin: 0 auto;
-  width: 100%;
+  max-width: 144rem;
   height: 100%;
   overflow-x: hidden;
 `;
@@ -54,7 +54,6 @@ export const StyledButton = styled(Button)`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  transform: translateZ(0);
 `;
 
 export const Overlay = styled(motion.div)`

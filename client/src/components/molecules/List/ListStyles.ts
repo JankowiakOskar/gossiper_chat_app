@@ -31,6 +31,7 @@ export const ListElement = styled(motion.li)`
   align-items: center;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  opacity: 0;
 
   ${({ theme }) => theme.mediaQuery.desktop} {
     margin: 1rem 1rem;

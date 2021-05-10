@@ -8,6 +8,7 @@ import { FormWrapper, Form } from './MessageFormStyles';
 type Props = {
   handleDataCB: (date: MessageType) => any;
   username: SocketUser['user'];
+  className?: string;
 };
 
 const defaultMessage: MessageType = {
@@ -16,7 +17,7 @@ const defaultMessage: MessageType = {
   text: '',
 };
 
-const MessageForm = ({ handleDataCB, username }: Props) => {
+const MessageForm = ({ handleDataCB, username, className }: Props) => {
   const [isSubmitted, setSubmitted] = useState(false);
   const [typingMessage, setTypingMessage] = useState<MessageType>(defaultMessage);
 
@@ -42,13 +43,17 @@ const MessageForm = ({ handleDataCB, username }: Props) => {
   }, [isSubmitted]);
 
   return (
-    <FormWrapper>
+    <FormWrapper className={className}>
       <Form onSubmit={e => handleSubmit(e)}>
         <InputMessage type='text' placeholder='Type new message' value={typingMessage.text} onChange={e => handleChange(e, username)} />
         <ButtonSend color={Color.LightBlue} type='submit' />
       </Form>
     </FormWrapper>
   );
+};
+
+MessageForm.defaultProps = {
+  className: '',
 };
 
 export default MessageForm;

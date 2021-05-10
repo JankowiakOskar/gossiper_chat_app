@@ -6,14 +6,19 @@ export const listElementVariants = {
   initial: {
     x: -50,
     opacity: 0,
+    display: 'none',
   },
   collapsed: (i: number) => ({
     x: -50,
     opacity: 0,
+    display: 'none',
     transition: {
       type: 'easeOut',
       duration: 0.15,
       delay: i * 0.05,
+      display: {
+        delay: 1,
+      },
     },
   }),
   expanded: (i: number) => ({

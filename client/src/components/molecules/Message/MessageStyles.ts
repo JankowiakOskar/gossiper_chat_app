@@ -40,11 +40,17 @@ export const MessageDate = styled.span`
   margin-left: 1.2rem;
 `;
 
-export const MessageText = styled.p`
+export const MessageText = styled.p<MessageProps>`
   margin: 0.5rem 0 0 0;
   display: block;
   max-width: 20rem;
   word-wrap: break-word;
-  color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.black};
   font-size: ${({ theme }) => theme.font.size.small};
+
+  ${({ direction }) =>
+    direction === Direction.Right &&
+    css`
+      color: ${({ theme }) => theme.colors.white};
+    `}
 `;

@@ -3,7 +3,8 @@ import Waves from 'assets/svgs/waves.svg';
 
 export const Wrapper = styled.div`
   position: relative;
-  min-height: 100vh;
+  height: calc(100vh - 7.5rem);
+  padding: 0 2rem;
   width: 100vw;
   overflow: hidden;
 
@@ -24,7 +25,6 @@ export const Wrapper = styled.div`
 `;
 
 export const InnerWrapper = styled.div`
-  padding: 0 2rem;
   max-width: 144rem;
   margin: 0 auto;
 

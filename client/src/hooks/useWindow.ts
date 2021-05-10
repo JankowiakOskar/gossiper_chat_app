@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { breakpoints } from 'assets/themes/theme';
 
 const useWindow = () => {
   const getWindowDismensions = () => ({ width: window.innerWidth, height: window.innerHeight });
@@ -17,6 +18,8 @@ const useWindow = () => {
   return {
     windowWidth: windowSize.width,
     windowHeight: windowSize.height,
+    isReachedDesktopDevice: windowSize.width >= breakpoints.desktop,
+    isReachedBigTabletDevice: windowSize.width >= breakpoints.bigTablet,
   };
 };
 

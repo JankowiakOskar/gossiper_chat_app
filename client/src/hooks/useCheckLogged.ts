@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from 'store';
 import { checkOutLoggedIn } from 'features/auth/authSlice';
+import { sleeper } from 'utils';
 
 const useCheckLogged = () => {
   const [isChecking, setChecking] = useState(true);
@@ -8,6 +9,7 @@ const useCheckLogged = () => {
 
   useEffect(() => {
     const checkUserPermission = async () => {
+      await sleeper(1000);
       await dispatch(checkOutLoggedIn());
       setChecking(false);
     };

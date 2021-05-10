@@ -8,7 +8,6 @@ import { Routes } from 'routes';
 import { ReactComponent as HomeSVG } from 'assets/svgs/HomeSVG.svg';
 import { ReactComponent as ChatIcon } from 'assets/svgs/ChatSVG.svg';
 import { ReactComponent as PadlockSVG } from 'assets/svgs/PadlockSVG.svg';
-import { breakpoints } from 'assets/themes/theme';
 import CustomLink from 'components/atoms/CustomLink/CustomLink';
 import Brand from 'components/atoms/Brand/Brand';
 import BurgerMenu from 'components/atoms/BurgerMenu/BurgerMenu';
@@ -37,8 +36,7 @@ const NavBar = () => {
   const location = useLocation();
   const authToken = useAppSelector(state => state.auth.authToken);
   const dispatch = useAppDispatch();
-  const { windowWidth } = useWindow();
-  const isBigDevice = windowWidth >= breakpoints.bigTablet;
+  const { isReachedBigTabletDevice } = useWindow();
 
   const navList: ListElementType[] = [
     { name: 'Home', path: Routes.Home, icon: <HomeSVG /> },
@@ -63,7 +61,10 @@ const NavBar = () => {
           <BurgerMenu isOpen={isOpenNav} setOpen={toggleNavBar} />
         </Wrapper>
         <Nav>
-          <List list={authToken ? [...navList, logoutEl] : [...navList, loginEl]} isExpanded={isBigDevice ? true : isOpenNav} />
+          <List
+            list={authToken ? [...navList, logoutEl] : [...navList, loginEl]}
+            isExpanded={isReachedBigTabletDevice ? true : isOpenNav}
+          />
         </Nav>
       </InnerWrapper>
     </StyledNavBar>

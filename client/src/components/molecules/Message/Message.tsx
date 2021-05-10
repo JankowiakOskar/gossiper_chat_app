@@ -18,7 +18,7 @@ const Message = ({ text, date, direction, sender }: MessageProps) => {
     <MessageWrapper direction={direction}>
       <MessageAuthor direction={direction}>{sender}</MessageAuthor>
       <MessageDate>{formatDate(date)}</MessageDate>
-      <MessageText>{text}</MessageText>
+      <MessageText direction={direction}>{text}</MessageText>
     </MessageWrapper>
   );
 };
