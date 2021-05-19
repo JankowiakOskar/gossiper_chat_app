@@ -3,7 +3,8 @@ import { useAppDispatch, useAppSelector } from 'store';
 import useOutsideClick from 'hooks/useOutsideClick';
 import { AnimateSharedLayout, AnimatePresence } from 'framer-motion';
 import { fetchChatRooms } from 'features/chatRooms/chatRoomsSlice';
-import { getItemByName } from 'utils';
+import { getItemByName, switchDocumentScroll } from 'utils';
+import { ScrollMode } from 'utils/types/enums';
 import TransitionProvider from 'providers/TransitionProvider';
 import LoaderProvider from 'providers/LoaderProvider';
 import Heading from 'components/atoms/Heading/Heading';
@@ -44,6 +45,14 @@ const ChatRoomsPage = () => {
   useEffect(() => {
     dispatch(fetchChatRooms());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (selectedName) {
+      switchDocumentScroll(ScrollMode.Disable);
+    } else {
+      switchDocumentScroll(ScrollMode.Enable);
+    }
+  }, [selectedName]);
 
   const selectedItem = selectedName && getItemByName(chatRooms, selectedName);
 

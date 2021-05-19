@@ -1,6 +1,6 @@
 import CustomLink from 'components/atoms/CustomLink/CustomLink';
 import { ListElementType } from 'utils/types/types';
-import { StyledList, StyledSpan, ListElement } from './ListStyles';
+import { StyledList, StyledSpan, ListElement } from './NavListStyles';
 
 export const listElementVariants = {
   initial: {
@@ -37,7 +37,7 @@ type Props = {
   isExpanded: boolean;
 };
 
-const List: React.FC<Props> = ({ list, isExpanded }) => {
+const NavList: React.FC<Props> = ({ list, isExpanded }) => {
   const handleClick = (e: React.MouseEvent, callback: ListElementType['clickHandler']) => {
     if (!callback) return;
     callback();
@@ -70,4 +70,4 @@ const List: React.FC<Props> = ({ list, isExpanded }) => {
   );
 };
 
-export default List;
+export default NavList;

@@ -1,7 +1,7 @@
 import { Color } from 'utils/types/enums';
 
 export type SocketUser = {
-  id: string | number;
+  socketId: string | number;
   user: string;
 };
 

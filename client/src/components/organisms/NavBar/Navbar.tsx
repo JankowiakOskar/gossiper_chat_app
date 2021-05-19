@@ -11,7 +11,7 @@ import { ReactComponent as PadlockSVG } from 'assets/svgs/PadlockSVG.svg';
 import CustomLink from 'components/atoms/CustomLink/CustomLink';
 import Brand from 'components/atoms/Brand/Brand';
 import BurgerMenu from 'components/atoms/BurgerMenu/BurgerMenu';
-import List from 'components/molecules/List/List';
+import NavList from 'components/molecules/NavList/NavList';
 import { StyledNavBar, Wrapper, InnerWrapper, Nav } from './NavBarStyles';
 
 const transition = {
@@ -61,7 +61,7 @@ const NavBar = () => {
           <BurgerMenu isOpen={isOpenNav} setOpen={toggleNavBar} />
         </Wrapper>
         <Nav>
-          <List
+          <NavList
             list={authToken ? [...navList, logoutEl] : [...navList, loginEl]}
             isExpanded={isReachedBigTabletDevice ? true : isOpenNav}
           />

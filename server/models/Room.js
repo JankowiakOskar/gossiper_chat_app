@@ -20,6 +20,8 @@ const roomSchema = new mongoose.Schema({
 		type: [String],
 		maxlength: 4,
 	},
+	users: [],
+	messages: [],
 });
 
 roomSchema.set("toJSON", {

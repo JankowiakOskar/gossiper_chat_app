@@ -7,31 +7,36 @@ const URL = '192.168.100.17:5000';
 
 let socket: Socket;
 
-const useSocket = () => {
+const useSocket = (roomId: string) => {
   const { login } = useAppSelector(state => state.auth);
   const [users, setUsers] = useState<SocketUser[]>([]);
   const [messages, setMessages] = useState<MessageType[]>([]);
 
+  console.log(messages);
   useEffect(() => {
-    socket = io(URL);
-    socket.on('connect', () => {
-      socket.emit('new user', login);
-    });
-
-    socket.on('users', currUsers => setUsers([...currUsers]));
-    socket.on('message', msg => {
-      setMessages(prevMessages => [...prevMessages, msg]);
-    });
+    if (login) {
+      socket = io(URL, { query: { user: login, roomId } });
+      socket.on('connect', () => {
+        socket.emit('joinRoom', { user: login, roomId });
+      });
+      socket.on('allMessages', allMessages => setMessages([...allMessages]));
+      socket.on('users', currUsers => setUsers([...currUsers]));
+      socket.on('newMessage', updateMessages);
+    }
 
     return () => {
       socket.disconnect();
     };
-  }, [login]);
+  }, [login, roomId]);
+
+  const updateMessages = (newMsg: MessageType) => setMessages(prevMessages => [...prevMessages, newMsg]);
+  const sendMessage = (message: MessageType['text']) => socket.emit('message', roomId, { sender: login, message });
 
   return {
     users,
     messages,
     socket,
+    sendMessage,
   };
 };
 

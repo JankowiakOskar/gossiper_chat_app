@@ -4,10 +4,10 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const socket = require("socket.io");
+const chatController = require("./controllers/chatController");
 //Import Routes
 const authRoute = require("./routes/auth");
 const chatRoomsRoute = require("./routes/chatRooms");
-const { createMessage } = require("./utils/message");
 
 mongoose.set("useUnifiedTopology", true);
 dotenv.config();
@@ -18,7 +18,7 @@ app.use(cors());
 //Connect to DB
 mongoose.connect(
 	process.env.DB_CONNECT,
-	{ useCreateIndex: true, useNewUrlParser: true },
+	{ useCreateIndex: true, useNewUrlParser: true, useFindAndModify: false },
 	() => console.log("Connected to DB"),
 );
 
@@ -41,34 +41,8 @@ const io = socket(server, {
 	},
 });
 
-const users = [];
-
 io.on("connect", (socket) => {
-	socket.on("new user", (user) => {
-		const newUser = {
-			id: socket.id,
-			name: user,
-		};
-		users.push(newUser);
-		socket.broadcast.emit(
-			"message",
-			createMessage(`${user}, has joined to chat, welcome!`, "Chat Bot"),
-		);
-		io.emit("users", users);
-	});
-
-	socket.on("message", (msg) => {
-		const { name } = users.find((user) => user.id === socket.id);
-		const newMsg = createMessage(msg, name);
-		io.emit("message", newMsg);
-	});
-
-	socket.on("disconnect", () => {
-		const { name } = users.find((user) => user.id === socket.id);
-		const disconnectMsg = createMessage(
-			`${name} has left from chat room`,
-			"Chat Bot",
-		);
-		socket.broadcast.emit("message", disconnectMsg);
-	});
+	chatController.joinRoom(io, socket);
+	chatController.emitMessages(io, socket);
+	chatController.leaveRoom(io, socket);
 });

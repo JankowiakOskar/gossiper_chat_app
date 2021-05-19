@@ -3,18 +3,16 @@ import { useAppSelector } from 'store';
 import short from 'short-uuid';
 import { MessageType } from 'utils/types/types';
 import { Direction } from 'utils/types/enums';
-import { Socket } from 'socket.io-client';
 import MessageForm from 'components/organisms/MessageForm/MessageForm';
 import Message from 'components/molecules/Message/Message';
 import { MessagesWrapper, Panel, EmptyMessage } from './ChatPanelStyles';
 
 type Props = {
   messages: MessageType[];
-  socket: Socket;
   className?: string;
 };
 
-const ChatPanel = ({ messages, socket, className }: Props) => {
+const ChatPanel = ({ messages, className }: Props) => {
   const { login } = useAppSelector(state => state.auth);
   const endMessagesRef = useRef<HTMLDivElement>(null);
 
@@ -42,7 +40,7 @@ const ChatPanel = ({ messages, socket, className }: Props) => {
         {messagesList}
         <EmptyMessage ref={endMessagesRef} />
       </MessagesWrapper>
-      {login && <MessageForm username={login} handleDataCB={(message: MessageType) => socket.emit('message', message.text)} />}
+      {login && <MessageForm username={login} />}
     </Panel>
   );
 };

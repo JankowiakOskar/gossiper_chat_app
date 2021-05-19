@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { ChatContext } from 'views/ChatRoom/ChatRoom';
 import { MessageType, SocketUser } from 'utils/types/types';
 import { Color } from 'utils/types/enums';
 import ButtonSend from 'components/atoms/SendButton/SendButton';
@@ -6,7 +7,6 @@ import InputMessage from 'components/atoms/CustomInput/CustomInput';
 import { FormWrapper, Form } from './MessageFormStyles';
 
 type Props = {
-  handleDataCB: (date: MessageType) => any;
   username: SocketUser['user'];
   className?: string;
 };
@@ -17,14 +17,15 @@ const defaultMessage: MessageType = {
   text: '',
 };
 
-const MessageForm = ({ handleDataCB, username, className }: Props) => {
+const MessageForm = ({ username, className }: Props) => {
+  const { sendMessage } = useContext(ChatContext);
   const [isSubmitted, setSubmitted] = useState(false);
   const [typingMessage, setTypingMessage] = useState<MessageType>(defaultMessage);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (!typingMessage.text) return;
-    handleDataCB(typingMessage);
+    sendMessage(typingMessage.text);
     setSubmitted(prevState => !prevState);
   };
 
