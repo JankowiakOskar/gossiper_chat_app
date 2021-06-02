@@ -4,20 +4,30 @@ const { createMessage } = require("../utils/message");
 const joinRoom = (io, socket) => {
 	socket.on("joinRoom", async ({ user, roomId }) => {
 		socket.join(roomId);
-		console.log(socket);
-		const { users, messages } = await ChatRoom.findOneAndUpdate(
+		const {
+			name: roomName,
+			users,
+			messages,
+		} = await ChatRoom.findOneAndUpdate(
 			{ _id: roomId },
 			{
 				$addToSet: { users: [{ user, socketId: socket.id }] },
 			},
 			{ new: true },
 		);
-		io.to(roomId).emit(
-			"newMessage",
-			createMessage(`${user}, has joined to chat, welcome!`, "Chat Bot"),
-		);
-		io.in(roomId).emit("users", users);
+
+		io.to(roomId).emit("users", users);
 		io.to(socket.id).emit("allMessages", messages);
+		socket
+			.to(roomId)
+			.emit(
+				"newMessage",
+				createMessage(`${user}, has joined to chat, welcome!`, "Chat Bot"),
+			);
+		io.to(socket.id).emit(
+			"newMessage",
+			createMessage(`Hi, ${user}, welcome to ${roomName}`, "Chat Bot"),
+		);
 	});
 };
 
@@ -27,7 +37,6 @@ const emitMessages = (io, socket) => {
 		await ChatRoom.findByIdAndUpdate(roomId, {
 			$push: { messages: [newMsg] },
 		});
-		console.log(newMsg);
 		io.in(roomId).emit("newMessage", newMsg);
 	});
 };

@@ -5,11 +5,15 @@ type HeadingProps = {
   subtitle?: string;
 };
 
-const Heading: React.FC<HeadingProps> = ({ title, subtitle = '' }) => (
+const Heading = ({ title, subtitle }: HeadingProps) => (
   <Header>
     <Title>{title}</Title>
     {subtitle && <Text>{subtitle}</Text>}
   </Header>
 );
+
+Heading.defaultProps = {
+  subtitle: '',
+};
 
 export default Heading;

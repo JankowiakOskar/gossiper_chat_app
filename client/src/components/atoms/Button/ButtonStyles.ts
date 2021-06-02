@@ -4,10 +4,11 @@ import { Color } from 'utils/types/enums';
 export interface ButtonProps {
   readonly underline?: boolean;
   readonly color?: Color;
+  readonly remWidth?: number;
 }
 
 const Button = styled.button<ButtonProps>`
-  width: 20rem;
+  width: ${({ remWidth }) => `${remWidth}rem` || '20rem'};
   height: 4.5rem;
   background-color: ${({ theme }) => theme.colors.lightGreen};
   color: ${({ theme }) => theme.colors.white};
@@ -17,6 +18,11 @@ const Button = styled.button<ButtonProps>`
   font-weight: bold;
   border: none;
   filter: drop-shadow(0px 4px 2px rgba(0, 0, 0, 0.25));
+  transition: all 0.2s ease;
+
+  &:disabled {
+    opacity: 0.7;
+  }
 
   ${({ color }) =>
     color &&

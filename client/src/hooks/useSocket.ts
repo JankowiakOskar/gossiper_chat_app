@@ -12,7 +12,6 @@ const useSocket = (roomId: string) => {
   const [users, setUsers] = useState<SocketUser[]>([]);
   const [messages, setMessages] = useState<MessageType[]>([]);
 
-  console.log(messages);
   useEffect(() => {
     if (login) {
       socket = io(URL, { query: { user: login, roomId } });

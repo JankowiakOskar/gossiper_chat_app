@@ -8,7 +8,6 @@ import Tab from 'components/organisms/Tabs/Tab/Tab';
 import ChatPanel from 'components/organisms/ChatPanel/ChatPanel';
 import SidePanel from 'components/organisms/SidePanel/SidePanel';
 import { MessageType } from 'utils/types/types';
-
 import { Wrapper, StyledChatPanel } from './ChatRoomStyles';
 
 type Context = {

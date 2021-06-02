@@ -3,18 +3,21 @@ import { StyledCircle } from './CircleStyles';
 
 type Props = {
   numInside: number;
-  color: Color;
+  bgColor?: Color;
+  textColor?: Color;
   className?: string;
 };
 
-const Circle = ({ numInside, color, className }: Props) => (
-  <StyledCircle className={className} color={color}>
+const Circle = ({ numInside, bgColor, textColor, className }: Props) => (
+  <StyledCircle className={className} bgColor={bgColor || Color.LightBlue} textColor={textColor || Color.White}>
     {numInside}
   </StyledCircle>
 );
 
 Circle.defaultProps = {
   className: '',
+  bgColor: '',
+  textColor: '',
 };
 
 export default Circle;

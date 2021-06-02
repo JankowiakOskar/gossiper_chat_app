@@ -6,7 +6,7 @@ import { LoaderWrapper, LoadingMessage } from './LoaderStyles';
 
 type LoaderProps = Omit<LoaderType, 'isLoading'>;
 
-const LoaderComponent: React.FC<LoaderProps> = ({ loadingMessage, loaderColor }) => {
+const LoaderComponent = ({ loadingMessage, loaderColor }: LoaderProps) => {
   const themeContext = useContext(ThemeContext);
 
   return (

@@ -1,20 +1,33 @@
+import React from 'react';
 import { StyledInputElement, StyledLabel, StyledInput, ErrorMessage } from './InputFieldStyles';
+
+type InputTypes = 'text' | 'password' | 'email' | 'checkbox';
 
 type Props = {
   name: string;
   label: string;
-  type: 'text' | 'password' | 'email';
+  type: InputTypes;
   error?: string;
   className?: string;
-  refRegister: any;
 };
 
-const InputField: React.FC<Props> = ({ name, label, type, className, refRegister, error = '' }) => (
-  <StyledInputElement className={className}>
-    <StyledLabel htmlFor={name}>{label}</StyledLabel>
-    <StyledInput name={name} type={type} ref={refRegister} isError={!!error} />
-    {error && <ErrorMessage>{error}</ErrorMessage>}
-  </StyledInputElement>
-);
+const InputField = React.forwardRef<HTMLInputElement, Props>(({ name, label, type, className, error = '' }, ref) => {
+  const isCheckboxType = type === 'checkbox';
+
+  return (
+    <StyledInputElement className={className} isCheckbox={isCheckboxType}>
+      <StyledLabel htmlFor={name}>{label}</StyledLabel>
+      <StyledInput
+        name={name}
+        type={type}
+        ref={ref}
+        {...(isCheckboxType && { value: label })}
+        isError={!!error}
+        isCheckbox={isCheckboxType}
+      />
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+    </StyledInputElement>
+  );
+});
 
 export default InputField;

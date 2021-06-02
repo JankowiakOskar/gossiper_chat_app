@@ -8,73 +8,11 @@ import * as yup from 'yup';
 import { signUp, logIn } from 'features/auth/authSlice';
 import { UserData } from 'features/auth/types';
 import { Color } from 'utils/types/enums';
-import styled, { css } from 'styled-components';
-import InputField from 'components/atoms/InputField/InputField';
 import Brand from 'components/atoms/Brand/Brand';
-import Button from 'components/atoms/Button/ButtonStyles';
 import LoaderComponent from 'components/molecules/LoaderComponent/LoaderComponent';
-
-interface WrapperProps {
-  readonly isAuthenticate: boolean;
-}
-
-const Wrapper = styled.div<WrapperProps>`
-  height: fit-content;
-  max-width: 50rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-
-  ${({ theme }) => theme.mediaQuery.bigTablet} {
-    padding: 3rem 2rem;
-    max-width: none;
-    width: 40rem;
-    border-radius: 2.5rem;
-    box-shadow: ${({ theme }) => theme.boxShadow};
-    border: 1px solid ${({ theme }) => theme.colors.darkGrey};
-  }
-
-  ${({ isAuthenticate }) =>
-    isAuthenticate &&
-    css`
-      &:after {
-        content: '';
-        opacity: 0.7;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        background-color: rgba(255, 255, 255, 0.7);
-      }
-    `}
-`;
-
-const Form = styled.form`
-  margin-top: 2rem;
-  display: flex;
-  flex-direction: column;
-`;
-
-const StyledInputField = styled(InputField)`
-  margin-top: 1.5rem;
-`;
-
-const StyledButton = styled(Button)`
-  margin: 3rem 0 2rem 0;
-  align-self: center;
-`;
-
-const LoaderWrapper = styled.div`
-  width: 7rem;
-  height: 7rem;
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-`;
+import Button from 'components/atoms/Button/ButtonStyles';
+import InputField from 'components/atoms/InputField/InputField';
+import { Wrapper, Form, StyledInputField, StyledButton, LoaderWrapper } from './AuthFormStyles';
 
 const registerSchema = yup.object().shape({
   email: yup.string().email('Your email is not correct').required('Email is required'),
@@ -123,19 +61,19 @@ const AuthForm = () => {
       <Form autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
         {isRegistered ? (
           <>
-            <InputField name='email' label='Email' type='email' refRegister={register} error={errors.email?.message} />
-            <StyledInputField name='password' label='Password' type='password' refRegister={register} error={errors.password?.message} />
+            <InputField name='email' label='Email' type='email' ref={register} error={errors.email?.message} />
+            <StyledInputField name='password' label='Password' type='password' ref={register} error={errors.password?.message} />
           </>
         ) : (
           <>
-            <InputField name='email' label='Email' type='email' refRegister={register} error={errors.email?.message} />
-            <StyledInputField name='login' label='Login' type='text' refRegister={register} error={errors.login?.message} />
-            <StyledInputField name='password' label='Password' type='password' refRegister={register} error={errors.password?.message} />
+            <InputField name='email' label='Email' type='email' ref={register} error={errors.email?.message} />
+            <StyledInputField name='login' label='Login' type='text' ref={register} error={errors.login?.message} />
+            <StyledInputField name='password' label='Password' type='password' ref={register} error={errors.password?.message} />
             <StyledInputField
               name='repeatedPassword'
               label='Repeat Password'
               type='password'
-              refRegister={register}
+              ref={register}
               error={errors.repeatedPassword?.message}
             />
           </>

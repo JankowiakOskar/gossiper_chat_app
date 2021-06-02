@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import { Color } from 'utils/types/enums';
 
 type StyleProps = {
-  readonly color: Color;
+  readonly bgColor: Color;
+  readonly textColor: Color;
 };
 
 export const StyledCircle = styled.div<StyleProps>`
@@ -12,7 +13,8 @@ export const StyledCircle = styled.div<StyleProps>`
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  background-color: ${props => props.theme.colors[props.color]};
+  background-color: ${props => props.theme.colors[props.bgColor]};
+  color: ${props => props.theme.colors[props.textColor]};
   box-shadow: ${({ theme }) => theme.boxShadow};
   font-weight: bold;
 `;

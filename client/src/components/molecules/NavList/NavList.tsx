@@ -37,37 +37,36 @@ type Props = {
   isExpanded: boolean;
 };
 
-const NavList: React.FC<Props> = ({ list, isExpanded }) => {
+const NavList = ({ list, isExpanded }: Props) => {
   const handleClick = (e: React.MouseEvent, callback: ListElementType['clickHandler']) => {
     if (!callback) return;
     callback();
   };
 
-  return (
-    <StyledList>
-      {list.map(({ name, path, icon, clickHandler }: ListElementType, index: number) => (
+  const renderList = (listToRender: typeof list) =>
+    listToRender.map(({ name, path, icon, clickHandler }: ListElementType, index: number) =>
+      path ? (
+        <CustomLink key={name} to={path}>
+          <ListElement custom={index} variants={listElementVariants} animate={isExpanded ? 'expanded' : 'collapsed'}>
+            {icon && icon}
+            <StyledSpan>{name}</StyledSpan>
+          </ListElement>
+        </CustomLink>
+      ) : (
         <ListElement
           key={name}
           custom={index}
           variants={listElementVariants}
           animate={isExpanded ? 'expanded' : 'collapsed'}
-          {...(!path && { onClick: e => handleClick(e, clickHandler) })}
+          onClick={e => handleClick(e, clickHandler)}
         >
-          {path ? (
-            <CustomLink to={path}>
-              {icon && icon}
-              <StyledSpan>{name}</StyledSpan>
-            </CustomLink>
-          ) : (
-            <>
-              {icon && icon}
-              <StyledSpan>{name}</StyledSpan>
-            </>
-          )}
+          {icon && icon}
+          <StyledSpan>{name}</StyledSpan>
         </ListElement>
-      ))}
-    </StyledList>
-  );
+      ),
+    );
+
+  return <StyledList>{renderList(list)}</StyledList>;
 };
 
 export default NavList;

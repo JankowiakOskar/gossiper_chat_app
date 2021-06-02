@@ -1,10 +1,27 @@
+import { useContext, forwardRef } from 'react';
+import { ThemeContext } from 'styled-components';
 import { Color } from 'utils/types/enums';
 import { ChatRoom } from 'features/chatRooms/types';
-import Tags from 'components/molecules/Tags/Tags';
 import { AnimatePresence } from 'framer-motion';
 import useAccessToRoom from 'hooks/useAccessToRoom';
-import { forwardRef } from 'react';
-import { Wrapper, RoomTitle, RoomDescription, StyledButton, RoomDownBar, ChatIcon, HighlightText } from './RoomCardStyles';
+import { ReactComponent as ClosedPadlockIcon } from 'assets/svgs/closed-padlock.svg';
+import { ReactComponent as OpenedPadlockIcon } from 'assets/svgs/opened-padlock.svg';
+import { ReactComponent as ChatPersonIcon } from 'assets/svgs/person-chat.svg';
+import Tags from 'components/molecules/Tags/Tags';
+import {
+  Wrapper,
+  RoomTitle,
+  RoomDescriptions,
+  Description,
+  StyledButton,
+  RoomDownBar,
+  ChatIcon,
+  SpanText,
+  Text,
+  IconActiveUsersWrapper,
+  IconsWrapper,
+  StyledCircle,
+} from './RoomCardStyles';
 
 const roomCardVariants = {
   hidden: (index: number) => ({
@@ -29,12 +46,12 @@ const expandedVariants = {
     opacity: 1,
     transition: {
       type: 'linear',
-      duration: 0.3,
+      duration: 0.2,
     },
   },
 };
 
-type RoomCardProps = Omit<ChatRoom, 'activeUsers'> & {
+type RoomCardProps = Omit<ChatRoom, 'users' | 'messages'> & {
   activeUsers: number;
   index?: number;
   className?: string;
@@ -44,6 +61,7 @@ type RoomCardProps = Omit<ChatRoom, 'activeUsers'> & {
 
 const RoomCard = forwardRef<HTMLDivElement, RoomCardProps>(
   ({ index, id, name, description, activeUsers, tags, isPrivate, className = '', handleCB, isExpanded }, ref) => {
+    const themeContext = useContext(ThemeContext);
     const { getIntoRoom } = useAccessToRoom({ id, isPrivate });
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
@@ -64,18 +82,27 @@ const RoomCard = forwardRef<HTMLDivElement, RoomCardProps>(
         onClick={handleCB && handleCB}
       >
         <RoomTitle>{name}</RoomTitle>
-        <RoomDescription>{description}</RoomDescription>
-        <AnimatePresence exitBeforeEnter initial={false}>
-          {isExpanded && (
-            <div>
-              <HighlightText>Tags:</HighlightText>
-              <Tags tags={tags} />
-            </div>
-          )}
-        </AnimatePresence>
-        <RoomDescription>{activeUsers}</RoomDescription>
-        <RoomDescription>{isPrivate}</RoomDescription>
+        <RoomDescriptions>
+          <Description>
+            <SpanText>Description:</SpanText> <Text>{description}</Text>
+          </Description>
+          <AnimatePresence exitBeforeEnter initial={false}>
+            {isExpanded && (
+              <Description>
+                <SpanText>Tags:</SpanText>
+                <Tags tags={tags} />
+              </Description>
+            )}
+          </AnimatePresence>
+        </RoomDescriptions>
         <RoomDownBar>
+          <IconsWrapper>
+            {isPrivate ? <ClosedPadlockIcon /> : <OpenedPadlockIcon />}
+            <IconActiveUsersWrapper data-for='activeUsers' data-tip={`Active users in ${name}`}>
+              <ChatPersonIcon stroke={themeContext.colors.darkBlue} />
+              <StyledCircle numInside={activeUsers} bgColor={Color.LightGreen} />
+            </IconActiveUsersWrapper>
+          </IconsWrapper>
           <StyledButton color={Color.LightBlue} onClick={handleClick}>
             Join <ChatIcon />
           </StyledButton>

@@ -12,9 +12,9 @@ const HeroSection = () => (
       <Text>
         Join to one of free rooms or crate your own. App is totaly free, create an account and <Span>expand your contacts</Span>
       </Text>
-      <StyledButton>
-        <CustomLink to={Routes.ChatRooms}>Start chatting</CustomLink>
-      </StyledButton>
+      <CustomLink to={Routes.ChatRooms}>
+        <StyledButton>Start chatting</StyledButton>
+      </CustomLink>
     </DescriptionWrapper>
     <HeroImage src={ChatHero} />
   </HeroSectionWrapper>

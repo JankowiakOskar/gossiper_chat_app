@@ -13,7 +13,7 @@ const UsersList = ({ usersList }: Props) => (
       <ListName>Active users</ListName>
       <IconWrapper>
         <ChatPersonIcon />
-        <StyledCircle numInside={usersList.length} color={Color.LightBlue} />
+        <StyledCircle numInside={usersList.length} bgColor={Color.LightBlue} />
       </IconWrapper>
     </ListHead>
     <List>

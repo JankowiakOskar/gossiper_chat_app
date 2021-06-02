@@ -6,6 +6,7 @@ export enum Direction {
 export enum Color {
   LightBlue = 'lightBlue',
   LightGreen = 'lightGreen',
+  White = 'white',
 }
 
 export enum ScrollMode {

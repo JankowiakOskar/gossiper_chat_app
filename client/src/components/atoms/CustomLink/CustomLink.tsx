@@ -6,10 +6,14 @@ type LProps = LinkProps & {
   className?: '';
 };
 
-const CustomLink: React.FC<LProps> = ({ children, className, ...rest }) => (
+const CustomLink = ({ children, className, ...rest }: LProps) => (
   <StyledLink className={className} {...rest}>
     {children}
   </StyledLink>
 );
+
+CustomLink.defaultProps = {
+  className: '',
+};
 
 export default CustomLink;

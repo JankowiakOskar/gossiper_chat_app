@@ -1,13 +1,19 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'store';
 import useOutsideClick from 'hooks/useOutsideClick';
+import useSelectedCard from 'hooks/useSelectedCard';
 import { AnimateSharedLayout, AnimatePresence } from 'framer-motion';
 import { fetchChatRooms } from 'features/chatRooms/chatRoomsSlice';
+import { openSelectedModal, closeModal } from 'features/modal/modalSlice';
+import { ModalKind } from 'features/modal/types';
 import { getItemByName, switchDocumentScroll } from 'utils';
 import { ScrollMode } from 'utils/types/enums';
 import TransitionProvider from 'providers/TransitionProvider';
+import ReactTooltip from 'react-tooltip';
 import LoaderProvider from 'providers/LoaderProvider';
 import Heading from 'components/atoms/Heading/Heading';
+import Modal from 'components/organisms/Modal/Modal';
+import RoomCreateForm from 'components/organisms/RoomCreateForm/RoomCreateForm';
 import { ReactComponent as IconPlus } from 'assets/svgs/icon-plus.svg';
 import { StyledButton, Wrapper, RoomsSection, StyledRoomCard, Overlay } from './ChatRoomsPageStyles';
 
@@ -19,7 +25,7 @@ const overlayVariants = {
     opacity: 1,
     transition: {
       when: 'beforeChildren',
-      ease: 'easeOut',
+      ease: 'easeIn',
       duration: 0.3,
     },
   },
@@ -34,27 +40,26 @@ const overlayVariants = {
 };
 
 const ChatRoomsPage = () => {
-  const [selectedName, setSelectedName] = useState('');
   const dispatch = useAppDispatch();
   const { chatRooms, isLoading: isLoadingRooms } = useAppSelector(state => state.chatRooms);
+  const { selectedModal } = useAppSelector(state => state.modal);
+  const { selectedCard, selectedCardRef, selectCard, removeSelectedCard } = useSelectedCard();
 
-  const expandedCardRef = useRef<HTMLDivElement>(null);
-
-  useOutsideClick(expandedCardRef, () => setSelectedName(''));
+  useOutsideClick(selectedCardRef, removeSelectedCard);
 
   useEffect(() => {
     dispatch(fetchChatRooms());
   }, [dispatch]);
 
   useEffect(() => {
-    if (selectedName) {
+    if (selectedCard) {
       switchDocumentScroll(ScrollMode.Disable);
     } else {
       switchDocumentScroll(ScrollMode.Enable);
     }
-  }, [selectedName]);
+  }, [selectedCard]);
 
-  const selectedItem = selectedName && getItemByName(chatRooms, selectedName);
+  const selectedItem = selectedCard && getItemByName(chatRooms, selectedCard);
 
   return (
     <TransitionProvider>
@@ -63,43 +68,49 @@ const ChatRoomsPage = () => {
         <LoaderProvider isLoading={isLoadingRooms} loadingMessage='Loading available chats...'>
           <AnimateSharedLayout type='crossfade'>
             <RoomsSection layout>
-              {chatRooms.map(({ id, name, description, activeUsers, tags, isPrivate }, index) => (
+              {chatRooms.map(({ id, name, description, users, tags, isPrivate }, index) => (
                 <StyledRoomCard
                   key={id}
                   id={id}
                   name={name}
                   description={description}
                   tags={tags}
-                  activeUsers={tags.length}
+                  activeUsers={users.length}
                   isPrivate={isPrivate}
                   index={index}
                   isExpanded={false}
-                  handleCB={() => setSelectedName(name)}
+                  handleCB={() => selectCard(name)}
                 />
               ))}
+              <ReactTooltip id='activeUsers' effect='solid' />
             </RoomsSection>
             <AnimatePresence exitBeforeEnter>
-              {selectedName && selectedItem && (
+              {selectedCard && selectedItem && (
                 <Overlay variants={overlayVariants} initial={false} animate='animate' exit='hidden' layout>
                   <StyledRoomCard
-                    ref={expandedCardRef}
+                    ref={selectedCardRef}
                     key={selectedItem.id}
                     id={selectedItem.id}
                     name={selectedItem.name}
                     description={selectedItem.description}
                     tags={selectedItem.tags}
-                    activeUsers={selectedItem.tags.length}
+                    activeUsers={selectedItem.users.length}
                     isPrivate={selectedItem.isPrivate}
                     isExpanded
                   />
+                  <ReactTooltip id='activeUsers' effect='solid' />
                 </Overlay>
               )}
             </AnimatePresence>
           </AnimateSharedLayout>
         </LoaderProvider>
-        <StyledButton>
+        <StyledButton onClick={() => dispatch(openSelectedModal(ModalKind.RoomCreatorModal))} data-for='addRoom' data-tip='Create new room'>
           <IconPlus />
         </StyledButton>
+        <Modal isOpen={selectedModal === ModalKind.RoomCreatorModal} onCloseHandler={() => dispatch(closeModal())}>
+          <RoomCreateForm />
+        </Modal>
+        <ReactTooltip id='addRoom' effect='solid' place='left' />
       </Wrapper>
     </TransitionProvider>
   );
