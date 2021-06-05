@@ -1,14 +1,22 @@
 import { useFormContext } from 'react-hook-form';
-import InputField from 'components/atoms/InputField/InputField';
+import InputField from 'components/molecules/InputField/InputField';
+import { StepOneWrapper } from './StepOneStyles';
 
 const StepOne = () => {
-  const { register } = useFormContext();
+  const { register, errors } = useFormContext();
 
   return (
-    <>
-      <InputField name='roomName' label='Room Name' type='text' ref={register} />
-      <InputField name='roomDescription' label='Room Description' type='text' ref={register} />
-    </>
+    <StepOneWrapper>
+      <InputField name='roomName' label='Room name' type='text' error={errors.roomName?.message} ref={register} />
+      <InputField
+        name='roomDescription'
+        label='Room description'
+        placeholder='etc.talks about money'
+        type='text'
+        error={errors.roomDescription?.message}
+        ref={register}
+      />
+    </StepOneWrapper>
   );
 };
 

@@ -1,21 +1,12 @@
 import styled, { css, keyframes } from 'styled-components';
 
-interface InputStyle {
-  readonly isError?: boolean;
-  readonly isCheckbox: boolean;
+interface CheckboxStyle {
+  readonly isCheckbox?: boolean;
 }
 
-const show = keyframes`
-  from {
-    opacity: 0;
-    transform: translate(0, -2rem)
-  }
-
-  to {
-    opacity: 1;
-    transform: translate(0,0)
-  }
-`;
+interface InputStyle extends CheckboxStyle {
+  isError?: boolean;
+}
 
 const pulse = keyframes`
   0% {
@@ -31,7 +22,7 @@ const pulse = keyframes`
   }
 `;
 
-export const StyledInputElement = styled.div<InputStyle>`
+export const StyledInputElement = styled.div<CheckboxStyle>`
   display: flex;
   flex-direction: column;
 
@@ -43,6 +34,7 @@ export const StyledInputElement = styled.div<InputStyle>`
       justify-content: flex-start;
       & label {
         order: 1;
+        padding: 0 0 0 1rem;
       }
     `}
 `;
@@ -51,12 +43,19 @@ export const StyledLabel = styled.label``;
 
 export const StyledInput = styled.input<InputStyle>`
   margin-top: 1rem;
+  padding: 0 1rem;
   min-width: 24rem;
   height: 4rem;
   box-shadow: ${({ theme }) => theme.boxShadow};
   border: 0.12rem solid ${({ theme }) => theme.colors.black};
   border-radius: 0.5rem;
   transition: border 0.3s ease-in;
+
+  &::placeholder {
+    font-size: ${({ theme }) => theme.font.size.small};
+    color: ${({ theme }) => theme.colors.darkGrey};
+  }
+
   ${({ isError }) =>
     isError &&
     css`
@@ -90,9 +89,4 @@ export const StyledInput = styled.input<InputStyle>`
         }
       }
     `}
-`;
-
-export const ErrorMessage = styled.p`
-  color: ${({ theme }) => theme.colors.red};
-  animation: 0.3s ${show} ease-in;
 `;

@@ -11,7 +11,7 @@ import { Color } from 'utils/types/enums';
 import Brand from 'components/atoms/Brand/Brand';
 import LoaderComponent from 'components/molecules/LoaderComponent/LoaderComponent';
 import Button from 'components/atoms/Button/ButtonStyles';
-import InputField from 'components/atoms/InputField/InputField';
+import InputField from 'components/molecules/InputField/InputField';
 import { Wrapper, Form, StyledInputField, StyledButton, LoaderWrapper } from './AuthFormStyles';
 
 const registerSchema = yup.object().shape({

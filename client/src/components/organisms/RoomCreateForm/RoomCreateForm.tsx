@@ -14,8 +14,8 @@ import StepThree from './StepThree/StepThree';
 import { WizardWrapper, Form, FormFooter } from './RoomCreateFormStyles';
 
 const schemaOne = yup.object().shape({
-  roomName: yup.string().required(),
-  roomDescription: yup.string().required(),
+  roomName: yup.string().required(`Don't leave blank name field`),
+  roomDescription: yup.string().required(`Describe your chat room`),
 });
 
 const schemaTwo = yup.object().shape({
@@ -69,7 +69,7 @@ const FormWizard = ({ children }: Props) => {
         lineMarginOffset={20}
         activeColor={themeContext.colors.lightBlue}
         completeColor={themeContext.colors.lightBlue}
-        completeBarColor={themeContext.colors.darkBlue}
+        completeBarColor={themeContext.colors.lightBlue}
       />
       <FormProvider {...methods}>
         <Form onSubmit={methods.handleSubmit(onSubmit)}>

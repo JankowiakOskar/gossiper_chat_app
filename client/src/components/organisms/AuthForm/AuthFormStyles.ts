@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import Button from 'components/atoms/Button/ButtonStyles';
-import InputField from 'components/atoms/InputField/InputField';
+import InputField from 'components/molecules/InputField/InputField';
 
 interface WrapperProps {
   readonly isAuthenticate: boolean;

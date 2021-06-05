@@ -13,3 +13,8 @@ export enum ScrollMode {
   Disable = 'hidden',
   Enable = '',
 }
+
+export enum VisibilityEnum {
+  isVisible,
+  isHidden,
+}
