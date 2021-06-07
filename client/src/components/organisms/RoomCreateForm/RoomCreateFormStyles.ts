@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 
 export const WizardWrapper = styled.div`
-  padding: 1rem 3rem;
+  height: 100%;
+  padding: 1rem 2rem;
+  overflow-y: auto;
 `;
 
 export const FormFooter = styled.div`

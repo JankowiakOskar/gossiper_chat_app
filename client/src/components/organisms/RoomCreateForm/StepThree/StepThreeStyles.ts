@@ -6,3 +6,7 @@ export const StepThreeWrapper = styled.div`
   flex-direction: column;
   gap: 2rem 0;
 `;
+
+export const StyledInput = styled.input`
+  margin: 0 0.5rem 0 0;
+`;

@@ -18,7 +18,7 @@ export const ModalOverlay = styled.div`
 
 export const ModalContent = styled(motion.div)`
   position: relative;
-  width: 90vw;
+  width: 95vw;
   min-height: 30rem;
   border-radius: 2.5rem;
   height: fit-content;
