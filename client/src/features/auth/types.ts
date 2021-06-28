@@ -1,4 +1,7 @@
 import { ErrorMessage } from 'utils/types/interfaces';
+import { ProcessStatus } from 'utils/types/enums';
+
+export type AuthTokenType = string;
 
 export interface UserData {
   email: string;
@@ -7,8 +10,8 @@ export interface UserData {
 }
 
 export interface AuthState {
-  authToken: string;
+  authToken: AuthTokenType;
   login: UserData['login'];
-  isAuthenticate: boolean;
+  authProcess: ProcessStatus;
   error?: ErrorMessage;
 }

@@ -24,15 +24,15 @@ const StepThree = () => {
     <StepThreeWrapper>
       <h3>Select type of your chat room</h3>
       <label htmlFor='freeRoom'>
-        <StyledInput id='freeRoom' type='radio' name='privateRoom' value={RoomValue.FreeRoom} ref={register} defaultChecked />
+        <StyledInput id='freeRoom' type='radio' name='isPrivate' value={RoomValue.FreeRoom} ref={register} defaultChecked />
         Free chat room
       </label>
       <label htmlFor='privateRoom'>
-        <StyledInput id='privateRoom' type='radio' name='privateRoom' value={RoomValue.PrivateRoom} ref={register} />
+        <StyledInput id='privateRoom' type='radio' name='isPrivate' value={RoomValue.PrivateRoom} ref={register} />
         Private chat room
       </label>
       {isPrivateRoomChoosen && (
-        <InputField name='roomPassword' label='Room password' type='password' error={roomPasswordError} ref={register} />
+        <InputField name='password' label='Room password' type='password' error={roomPasswordError} ref={register} />
       )}
     </StepThreeWrapper>
   );

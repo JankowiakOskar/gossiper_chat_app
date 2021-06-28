@@ -18,3 +18,10 @@ export enum VisibilityEnum {
   isVisible,
   isHidden,
 }
+
+export enum ProcessStatus {
+  Idle = 'idle',
+  Started = 'started',
+  Success = 'success',
+  Rejected = 'rejected',
+}

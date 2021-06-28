@@ -4,7 +4,12 @@ const useOutsideClick = (ref: React.RefObject<HTMLElement>, cb: () => any) => {
   useEffect(() => {
     const handleClick = (e: MouseEvent | TouchEvent) => {
       if (!ref.current || ref.current.contains(e.target as Node)) return;
-      cb();
+      if (e instanceof MouseEvent) {
+        const leftMouseClick = e.buttons === 1;
+        if (leftMouseClick) cb();
+      } else {
+        cb();
+      }
     };
 
     document.addEventListener('mousedown', handleClick);

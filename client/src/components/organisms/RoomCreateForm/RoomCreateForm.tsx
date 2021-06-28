@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { ThemeContext } from 'styled-components';
 import * as yup from 'yup';
 import { Color } from 'utils/types/enums';
+import { ChatRoomPreview } from 'features/chatRooms/types';
 import Heading from 'components/atoms/Heading/Heading';
 import Button from 'components/atoms/Button/ButtonStyles';
 import Stepper from 'react-stepper-horizontal';
@@ -14,8 +15,8 @@ import StepThree from './StepThree/StepThree';
 import { WizardWrapper, Form, FormFooter } from './RoomCreateFormStyles';
 
 const schemaOne = yup.object().shape({
-  roomName: yup.string().required(`Don't leave blank name field`),
-  roomDescription: yup.string().required(`Describe your chat room`),
+  name: yup.string().required(`Don't leave blank name field`),
+  description: yup.string().required(`Describe your chat room`),
 });
 
 const schemaTwo = yup.object().shape({
@@ -23,8 +24,8 @@ const schemaTwo = yup.object().shape({
 });
 
 const schemaThree = yup.object().shape({
-  privateRoom: yup.bool(),
-  roomPassword: yup.string().when('privateRoom', {
+  isPrivate: yup.bool(),
+  password: yup.string().when('isPrivateRoom', {
     is: true,
     then: yup.string().required('Please add your room password'),
   }),
@@ -48,7 +49,7 @@ const FormWizard = ({ children }: Props) => {
     shouldUnregister: false,
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: ChatRoomPreview) => {
     if (isLastStep) {
       console.log(data);
     } else {
@@ -64,7 +65,7 @@ const FormWizard = ({ children }: Props) => {
           title: child.props.title,
         }))}
         activeStep={activeStep}
-        completeOpacity={0.7}
+        completeOpacity='0.7'
         size={35}
         lineMarginOffset={20}
         activeColor={themeContext.colors.lightBlue}

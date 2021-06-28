@@ -4,12 +4,13 @@ import { saveItemInLS, getItemFromLS } from 'utils/storageHelpers';
 import { setAuthAxiosConfig } from 'services/authAxios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { ErrorMessage } from 'utils/types/interfaces';
-import { AuthState, UserData } from './types';
+import { ProcessStatus } from 'utils/types/enums';
+import { AuthState, AuthTokenType, UserData } from './types';
 
 const initialState = {
   authToken: '',
   login: '',
-  isAuthenticate: false,
+  authProcess: ProcessStatus.Idle,
 } as AuthState;
 
 export const signUp = createAsyncThunk<AuthState, UserData, { rejectValue: ErrorMessage }>(
@@ -48,7 +49,8 @@ export const logIn = createAsyncThunk<AuthState, UserData, { rejectValue: ErrorM
 );
 
 export const checkOutLoggedIn = createAsyncThunk('auth/checkOutLoggedIn', async (_, { rejectWithValue }) => {
-  const authToken = getItemFromLS('auth-token');
+  const authToken: AuthTokenType | null = getItemFromLS('auth-token');
+  if (!authToken) return {};
   setAuthAxiosConfig(authToken);
   try {
     const { data } = await axios.post('http://192.168.100.17:5000/api/user/checkLoggedIn');
@@ -72,39 +74,48 @@ export const authSlice = createSlice({
       localStorage.removeItem('auth-token');
       setAuthAxiosConfig('');
     },
+    setIdleAuthProcess: state => {
+      state.authProcess = ProcessStatus.Idle;
+    },
   },
   extraReducers: builder => {
     builder.addCase(signUp.pending, state => {
-      state.isAuthenticate = !state.isAuthenticate;
+      state.authProcess = ProcessStatus.Started;
     });
     builder.addCase(signUp.fulfilled, (state, action) => {
-      state.isAuthenticate = !state.isAuthenticate;
+      state.authProcess = ProcessStatus.Success;
       state.login = action.payload.login;
+    });
+    builder.addCase(signUp.rejected, state => {
+      state.authProcess = ProcessStatus.Rejected;
     });
 
     builder.addCase(logIn.pending, state => {
-      state.isAuthenticate = !state.isAuthenticate;
+      state.authProcess = ProcessStatus.Started;
     });
     builder.addCase(logIn.fulfilled, (state, action) => {
-      state.isAuthenticate = !state.isAuthenticate;
+      state.authProcess = ProcessStatus.Success;
       state.authToken = action.payload.authToken;
       state.login = action.payload.login;
     });
+    builder.addCase(logIn.rejected, state => {
+      state.authProcess = ProcessStatus.Rejected;
+    });
     builder.addCase(checkOutLoggedIn.pending, state => {
-      state.isAuthenticate = !state.isAuthenticate;
+      state.authProcess = ProcessStatus.Started;
     });
     builder.addCase(checkOutLoggedIn.fulfilled, (state, action) => {
-      state.isAuthenticate = !state.isAuthenticate;
+      state.authProcess = ProcessStatus.Success;
       state.authToken = action.payload.authToken;
       state.login = action.payload.login;
     });
     builder.addCase(checkOutLoggedIn.rejected, state => {
-      state.isAuthenticate = !state.isAuthenticate;
+      state.authProcess = ProcessStatus.Rejected;
       state.authToken = '';
     });
   },
 });
 
-export const { logOut } = authSlice.actions;
+export const { logOut, setIdleAuthProcess } = authSlice.actions;
 
 export default authSlice.reducer;

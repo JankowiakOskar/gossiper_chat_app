@@ -8,6 +8,7 @@ export interface ButtonProps {
 }
 
 const Button = styled.button<ButtonProps>`
+  padding: 2rem;
   width: ${({ remWidth }) => `${remWidth}rem` || '20rem'};
   height: 4.5rem;
   background-color: ${({ theme }) => theme.colors.lightGreen};

@@ -7,9 +7,9 @@ const StepOne = () => {
 
   return (
     <StepOneWrapper>
-      <InputField name='roomName' label='Room name' type='text' error={errors.roomName?.message} ref={register} />
+      <InputField name='name' label='Room name' type='text' error={errors.roomName?.message} ref={register} />
       <InputField
-        name='roomDescription'
+        name='description'
         label='Room description'
         placeholder='etc.talks about money'
         type='text'

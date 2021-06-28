@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { signUp, logIn } from 'features/auth/authSlice';
 import { UserData } from 'features/auth/types';
-import { Color } from 'utils/types/enums';
+import { Color, ProcessStatus } from 'utils/types/enums';
 import Brand from 'components/atoms/Brand/Brand';
 import LoaderComponent from 'components/molecules/LoaderComponent/LoaderComponent';
 import Button from 'components/atoms/Button/ButtonStyles';
@@ -36,7 +36,8 @@ const AuthForm = () => {
   });
   const history = useHistory();
   const dispatch = useAppDispatch();
-  const { isAuthenticate } = useAppSelector(state => state.auth);
+  const { authProcess } = useAppSelector(state => state.auth);
+  const isAuthenticate = authProcess === ProcessStatus.Started;
 
   const switchFormType = (): void => setRegister(prevState => !prevState);
 
@@ -58,7 +59,7 @@ const AuthForm = () => {
   return (
     <Wrapper isAuthenticate={isAuthenticate}>
       <Brand />
-      <Form autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
+      <Form autoComplete='off' noValidate onSubmit={handleSubmit(onSubmit)}>
         {isRegistered ? (
           <>
             <InputField name='email' label='Email' type='email' ref={register} error={errors.email?.message} />
