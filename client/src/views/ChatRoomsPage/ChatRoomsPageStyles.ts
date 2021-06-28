@@ -45,6 +45,7 @@ export const StyledRoomCard = styled(RoomCard)`
 `;
 
 export const StyledButton = styled(Button)`
+  padding: 0;
   position: fixed;
   bottom: 5%;
   right: 5%;

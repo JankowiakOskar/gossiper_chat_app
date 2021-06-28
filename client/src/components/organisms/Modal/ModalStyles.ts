@@ -32,6 +32,7 @@ export const ModalContent = styled(motion.div)`
 `;
 
 export const CloseModalBtn = styled(Button)`
+  padding: 0;
   position: absolute;
   top: 1rem;
   right: 1rem;

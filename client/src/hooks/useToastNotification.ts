@@ -18,7 +18,7 @@ type ToastType = {
 const useToastNotification = () => {
   const { code, errorMessage } = useAppSelector(state => state.error);
   const { authProcess, authToken } = useAppSelector(state => state.auth);
-  const isAuthorizedUser = authProcess === ProcessStatus.Success && authToken.length > 0;
+  const isAuthorizedUser = authProcess === ProcessStatus.Success && authToken;
   const dispatch = useAppDispatch();
 
   const memoizedToastConfig: ToastOptions = useMemo(
@@ -33,7 +33,7 @@ const useToastNotification = () => {
 
   useEffect(() => {
     if (code || errorMessage) {
-      const message = `${code && `${code}: `}${errorMessage}`;
+      const message = `❗ ${code && `${code}: `}${errorMessage}`;
       showToast({ message, type: ToastEnum.Error }, { ...memoizedToastConfig, onClose: () => dispatch(deleteError()) });
     }
   }, [code, errorMessage, memoizedToastConfig, dispatch]);

@@ -8,9 +8,9 @@ export interface ButtonProps {
 }
 
 const Button = styled.button<ButtonProps>`
-  padding: 2rem;
-  width: ${({ remWidth }) => `${remWidth}rem` || '20rem'};
-  height: 4.5rem;
+  position: relative;
+  padding: 1.5rem 2rem;
+  width: ${({ remWidth }) => (remWidth ? `${remWidth}rem` : '20rem')};
   background-color: ${({ theme }) => theme.colors.lightGreen};
   color: ${({ theme }) => theme.colors.white};
   font-size: ${({ theme }) => theme.font.size.small};
@@ -23,6 +23,10 @@ const Button = styled.button<ButtonProps>`
 
   &:disabled {
     opacity: 0.7;
+  }
+
+  &:hover {
+    box-shadow: inset 0 0 10rem 10rem rgba(255, 255, 255, 0.1);
   }
 
   ${({ color }) =>
@@ -39,7 +43,7 @@ const Button = styled.button<ButtonProps>`
       border-bottom: 0.1rem solid ${({ theme }) => theme.colors.black};
       text-transform: none;
       border-radius: 0;
-      height: 3rem;
+      width: fit-content;
     `}
 `;
 

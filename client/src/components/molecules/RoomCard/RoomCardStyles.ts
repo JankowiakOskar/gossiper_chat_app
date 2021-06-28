@@ -81,10 +81,11 @@ export const RoomDownBar = styled.div`
 `;
 
 export const StyledButton = styled(Button)`
+  padding: 1.3rem;
   width: 10rem;
   height: 4rem;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 `;
 

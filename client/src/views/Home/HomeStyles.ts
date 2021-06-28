@@ -21,6 +21,10 @@ export const Wrapper = styled.div`
     background-size: 100%;
     z-index: -2;
     opacity: 0.8;
+
+    ${({ theme }) => theme.mediaQuery.desktop} {
+      top: 10rem;
+    }
   }
 `;
 
