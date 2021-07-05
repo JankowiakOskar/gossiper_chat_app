@@ -26,13 +26,13 @@ import {
 const roomCardVariants = {
   hidden: (index: number) => ({
     opacity: 0,
-    x: index % 2 === 0 ? -50 : 50,
+    x: index % 2 === 0 ? -60 : 60,
   }),
   visible: (index: number) => ({
     opacity: 1,
     x: 0,
     transition: {
-      delay: index * 0.3,
+      delay: index * 0.1,
       ease: [0.45, 0.03, 0.2, -0.01],
     },
   }),
@@ -55,7 +55,7 @@ type RoomCardProps = Omit<ChatRoom, 'users' | 'messages'> & {
   activeUsers: number;
   index?: number;
   className?: string;
-  handleCB?: () => any;
+  handleCB?: () => void;
   isExpanded: boolean;
 };
 
@@ -71,9 +71,9 @@ const RoomCard = forwardRef<HTMLDivElement, RoomCardProps>(
 
     return (
       <Wrapper
-        ref={ref}
+        {...(ref && { ref })}
         isExpanded={isExpanded}
-        layoutId={name}
+        layoutId={id}
         className={className}
         custom={index}
         variants={!isExpanded ? roomCardVariants : expandedVariants}

@@ -9,7 +9,7 @@ export interface ButtonProps {
 
 const Button = styled.button<ButtonProps>`
   position: relative;
-  padding: 1.5rem 2rem;
+  height: 5rem;
   width: ${({ remWidth }) => (remWidth ? `${remWidth}rem` : '20rem')};
   background-color: ${({ theme }) => theme.colors.lightGreen};
   color: ${({ theme }) => theme.colors.white};

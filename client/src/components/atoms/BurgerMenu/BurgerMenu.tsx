@@ -35,7 +35,7 @@ const BottomLineVariants = {
 
 type Props = {
   isOpen: boolean;
-  setOpen: () => any;
+  setOpen: () => void;
 };
 
 const BurgerMenu: React.FC<Props> = ({ isOpen, setOpen }) => (

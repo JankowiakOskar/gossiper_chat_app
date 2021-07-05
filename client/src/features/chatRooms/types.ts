@@ -1,11 +1,11 @@
 import { ErrorMessage } from 'utils/types/interfaces';
-import { MessageType } from 'utils/types/types';
+import { MessageType, SocketUser } from 'utils/types/types';
 
 export interface ChatRoom {
-  id?: string;
+  id: string;
   name: string;
   description: string;
-  users: string[];
+  users: SocketUser[];
   messages: MessageType[];
   tags: string[];
   isPrivate: boolean;
@@ -24,6 +24,7 @@ export interface RoomData {
 
 export interface ChatRoomsState {
   chatRooms: ChatRoom[];
-  isLoading: boolean;
+  areFetchingRooms: boolean;
+  isRoomCreating: boolean;
   error: ErrorMessage;
 }

@@ -1,15 +1,16 @@
 import { useState, useRef } from 'react';
+import { getItemById } from 'utils/index';
 
-const useSelectedCard = () => {
-  const [selectedCard, setSelectedCard] = useState('');
+const useSelectedCard = <T extends { id: string }>(cardItems: T[]) => {
+  const [selectedCardId, setSelectedCardId] = useState('');
 
   const selectedCardRef = useRef<HTMLDivElement>(null);
 
-  const removeSelectedCard = () => setSelectedCard('');
+  const removeSelectedCard = () => setSelectedCardId('');
 
-  const selectCard = (name: string) => setSelectedCard(name);
+  const selectedCard = selectedCardId ? getItemById(cardItems, selectedCardId) : undefined;
 
-  return { selectedCard, selectedCardRef, selectCard, removeSelectedCard };
+  return { selectedCard, setSelectedCardId, selectedCardRef, removeSelectedCard };
 };
 
 export default useSelectedCard;

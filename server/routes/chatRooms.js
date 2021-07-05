@@ -18,7 +18,7 @@ router.get("/chatrooms", verify, async (req, res) => {
 	}
 });
 
-router.post("/chatrooms/create", verify, async (req, res) => {
+router.put("/chatrooms", verify, async (req, res) => {
 	const hashedPassword =
 		req.body.password &&
 		(await new Promise((resolve) =>
@@ -37,9 +37,13 @@ router.post("/chatrooms/create", verify, async (req, res) => {
 		tags: [...req.body.tags],
 	});
 	try {
-		newChatRoom.save();
-		res.send("Chat room has been successfully created");
+		await newChatRoom.save((err, createdRoom) => {
+			if (err) return "Error occured during room creation, try again!";
+			console.log(createdRoom);
+			res.send({ createdRoom });
+		});
 	} catch (err) {
+		console.log(err);
 		res.status(400).send(err);
 	}
 });

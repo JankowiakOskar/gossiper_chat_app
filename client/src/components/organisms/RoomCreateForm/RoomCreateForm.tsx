@@ -1,13 +1,18 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
+import { useAppDispatch, useAppSelector } from 'store';
+import { useStepper } from 'hooks/useStepper';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ThemeContext } from 'styled-components';
 import * as yup from 'yup';
-import { Color } from 'utils/types/enums';
+import Stepper from 'react-stepper-horizontal';
+import Loader from 'react-loader-spinner';
+import { createChatRoom } from 'features/chatRooms/chatRoomsSlice';
 import { ChatRoomPreview } from 'features/chatRooms/types';
+import { closeModal } from 'features/modal/modalSlice';
+import { Color } from 'utils/types/enums';
 import Heading from 'components/atoms/Heading/Heading';
 import Button from 'components/atoms/Button/ButtonStyles';
-import Stepper from 'react-stepper-horizontal';
 import FormStep, { StepProps } from './FormStep/FormStep';
 import StepOne from './StepOne/StepOne';
 import StepTwo from './StepTwo/StepTwo';
@@ -36,25 +41,36 @@ type Props = {
 };
 
 const FormWizard = ({ children }: Props) => {
-  const [activeStep, setActiveStep] = useState(0);
   const allSteps = React.Children.toArray(children);
-  const renderedStep = allSteps[activeStep];
-  const isLastStep = activeStep === allSteps.length - 1;
-  const isFirstStep = activeStep === 0;
+  const { activeStep, setActiveStep, isLastStep, isFirstStep, choosenStep } = useStepper(allSteps, { defaultStep: 0 });
 
   const themeContext = useContext(ThemeContext);
+  const { isRoomCreating } = useAppSelector(state => state.chatRooms);
+  const dispatch = useAppDispatch();
 
   const methods = useForm({
     resolver: yupResolver(React.Children.map(children, child => child.props.validationschema)[activeStep]),
     shouldUnregister: false,
+    mode: 'onChange',
   });
 
   const onSubmit = (data: ChatRoomPreview) => {
-    if (isLastStep) {
-      console.log(data);
-    } else {
+    if (!isLastStep) {
       setActiveStep(step => step + 1);
+    } else {
+      const handleCreateRooomProcess = async () => {
+        await dispatch(createChatRoom(data));
+        dispatch(closeModal());
+      };
+      handleCreateRooomProcess();
     }
+  };
+
+  const renderLoaderAgainstContent = <T extends unknown>(shouldRenderLoader: boolean, content: T): JSX.Element | T => {
+    if (shouldRenderLoader) {
+      return <Loader type='ThreeDots' color={themeContext.colors.white} height={50} width={50} />;
+    }
+    return content;
   };
 
   return (
@@ -74,7 +90,7 @@ const FormWizard = ({ children }: Props) => {
       />
       <FormProvider {...methods}>
         <Form onSubmit={methods.handleSubmit(onSubmit)}>
-          {renderedStep}
+          {choosenStep}
           <FormFooter>
             <Button
               type='button'
@@ -85,8 +101,8 @@ const FormWizard = ({ children }: Props) => {
             >
               Back
             </Button>
-            <Button type='submit' color={Color.LightGreen} remWidth={13}>
-              {isLastStep ? 'Create Room' : 'Next Step'}
+            <Button type='submit' color={Color.LightGreen} remWidth={13} disabled={isRoomCreating}>
+              {renderLoaderAgainstContent(isRoomCreating, isLastStep ? 'Create Room' : 'Next')}
             </Button>
           </FormFooter>
         </Form>

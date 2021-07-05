@@ -11,7 +11,8 @@ enum RoomValue {
 const StepThree = () => {
   const { register, watch, errors, clearErrors } = useFormContext();
   const roomPasswordError = errors.roomPassword?.message;
-  const watchSelectPrivateRoom: RoomValue = watch('privateRoom');
+  const watchSelectPrivateRoom: RoomValue = watch('isPrivate');
+  console.log(watchSelectPrivateRoom);
   const isPrivateRoomChoosen = watchSelectPrivateRoom === RoomValue.PrivateRoom;
 
   useEffect(() => {

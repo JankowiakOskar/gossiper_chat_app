@@ -7,13 +7,13 @@ const StepOne = () => {
 
   return (
     <StepOneWrapper>
-      <InputField name='name' label='Room name' type='text' error={errors.roomName?.message} ref={register} />
+      <InputField name='name' label='Room name' type='text' error={errors.name?.message} ref={register} />
       <InputField
         name='description'
         label='Room description'
         placeholder='etc.talks about money'
         type='text'
-        error={errors.roomDescription?.message}
+        error={errors.description?.message}
         ref={register}
       />
     </StepOneWrapper>

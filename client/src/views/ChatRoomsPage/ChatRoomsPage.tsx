@@ -6,7 +6,7 @@ import { AnimateSharedLayout, AnimatePresence } from 'framer-motion';
 import { fetchChatRooms } from 'features/chatRooms/chatRoomsSlice';
 import { openSelectedModal, closeModal } from 'features/modal/modalSlice';
 import { ModalKind } from 'features/modal/types';
-import { getItemByName, switchDocumentScroll } from 'utils';
+import { switchDocumentScroll } from 'utils';
 import { ScrollMode } from 'utils/types/enums';
 import TransitionProvider from 'providers/TransitionProvider';
 import ReactTooltip from 'react-tooltip';
@@ -41,9 +41,9 @@ const overlayVariants = {
 
 const ChatRoomsPage = () => {
   const dispatch = useAppDispatch();
-  const { chatRooms, isLoading: isLoadingRooms } = useAppSelector(state => state.chatRooms);
+  const { chatRooms, areFetchingRooms } = useAppSelector(state => state.chatRooms);
   const { selectedModal } = useAppSelector(state => state.modal);
-  const { selectedCard, selectedCardRef, selectCard, removeSelectedCard } = useSelectedCard();
+  const { selectedCard, setSelectedCardId, selectedCardRef, removeSelectedCard } = useSelectedCard(chatRooms);
 
   useOutsideClick(selectedCardRef, removeSelectedCard);
 
@@ -59,13 +59,11 @@ const ChatRoomsPage = () => {
     }
   }, [selectedCard]);
 
-  const selectedItem = selectedCard && getItemByName(chatRooms, selectedCard);
-
   return (
     <TransitionProvider>
       <Wrapper>
         <Heading title='Chat Rooms' subtitle='Join to one of following chats or create own room' />
-        <LoaderProvider isLoading={isLoadingRooms} loadingMessage='Loading available chats...'>
+        <LoaderProvider isLoading={areFetchingRooms} loadingMessage='Loading available chats...'>
           <AnimateSharedLayout type='crossfade'>
             <RoomsSection layout>
               {chatRooms.map(({ id, name, description, users, tags, isPrivate }, index) => (
@@ -79,23 +77,23 @@ const ChatRoomsPage = () => {
                   isPrivate={isPrivate}
                   index={index}
                   isExpanded={false}
-                  handleCB={() => selectCard(name)}
+                  handleCB={() => setSelectedCardId(id)}
                 />
               ))}
               <ReactTooltip id='activeUsers' effect='solid' />
             </RoomsSection>
             <AnimatePresence exitBeforeEnter>
-              {selectedCard && selectedItem && (
+              {selectedCard && (
                 <Overlay variants={overlayVariants} initial={false} animate='animate' exit='hidden' layout>
                   <StyledRoomCard
                     ref={selectedCardRef}
-                    key={selectedItem.id}
-                    id={selectedItem.id}
-                    name={selectedItem.name}
-                    description={selectedItem.description}
-                    tags={selectedItem.tags}
-                    activeUsers={selectedItem.users.length}
-                    isPrivate={selectedItem.isPrivate}
+                    key={selectedCard.id}
+                    id={selectedCard.id}
+                    name={selectedCard.name}
+                    description={selectedCard.description}
+                    tags={selectedCard.tags}
+                    activeUsers={selectedCard.users.length}
+                    isPrivate={selectedCard.isPrivate}
                     isExpanded
                   />
                   <ReactTooltip id='activeUsers' effect='solid' />

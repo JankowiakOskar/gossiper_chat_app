@@ -3,6 +3,7 @@ import { ReactComponent as SendIcon } from 'assets/svgs/send-icon.svg';
 import Button from 'components/atoms/Button/ButtonStyles';
 
 export const StyledSendButton = styled(Button)`
+  padding: 0;
   width: 5rem;
   height: 5rem;
   border-radius: 50%;

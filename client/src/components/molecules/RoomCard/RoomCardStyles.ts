@@ -17,7 +17,6 @@ export const Wrapper = styled(motion.figure)<WrapperProps>`
   padding: 1rem;
   width: 90vw;
   max-width: 33rem;
-  height: 19rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -71,7 +70,7 @@ export const Text = styled.p`
 `;
 
 export const RoomDownBar = styled.div`
-  margin: 1rem 0 0 0;
+  margin: 2rem 0 0 0;
   padding: 1rem;
   width: 100%;
   display: flex;
