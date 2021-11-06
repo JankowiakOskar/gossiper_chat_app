@@ -13,7 +13,9 @@ mongoose.set("useUnifiedTopology", true);
 dotenv.config();
 
 // enable cors
-app.use(cors());
+app.use(cors({
+	origin: '*'
+}));
 
 //Connect to DB
 mongoose.connect(
@@ -30,7 +32,7 @@ app.use("/api/user", authRoute);
 app.use("/api/chat", chatRoomsRoute);
 
 const PORT = 5000;
-const HOST = "192.168.100.17";
+const HOST = "192.168.100.146";
 const server = app.listen(PORT, HOST, () => {
 	console.log(`server has started and listening on port: ${PORT}`);
 });
