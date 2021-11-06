@@ -3,7 +3,7 @@ import { useAppSelector } from 'store';
 import { io, Socket } from 'socket.io-client';
 import { MessageType, SocketUser } from 'utils/types/types';
 
-const URL = '192.168.100.17:5000';
+const URL = '192.168.100.146:5000';
 
 let socket: Socket;
 

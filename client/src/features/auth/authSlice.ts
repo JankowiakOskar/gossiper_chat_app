@@ -17,7 +17,7 @@ export const signUp = createAsyncThunk<AuthState, UserData, { rejectValue: Error
   'auth/signUp',
   async (userData, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post('http://192.168.100.17:5000/api/user/register', userData);
+      const { data } = await axios.post('http://192.168.100.146:5000/api/user/register', userData);
       return data;
     } catch (err) {
       const {
@@ -33,7 +33,7 @@ export const logIn = createAsyncThunk<AuthState, UserData, { rejectValue: ErrorM
   'auth/logIn',
   async (userData, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post('http://192.168.100.17:5000/api/user/login', userData);
+      const { data } = await axios.post('http://192.168.100.146:5000/api/user/login', userData);
       const { authToken } = data;
       saveItemInLS('auth-token', authToken);
       setAuthAxiosConfig(authToken);
@@ -53,7 +53,7 @@ export const checkOutLoggedIn = createAsyncThunk('auth/checkOutLoggedIn', async 
   if (!authToken) return {};
   setAuthAxiosConfig(authToken);
   try {
-    const { data } = await axios.post('http://192.168.100.17:5000/api/user/checkLoggedIn');
+    const { data } = await axios.post('http://192.168.100.146:5000/api/user/checkLoggedIn');
     return data;
   } catch (err) {
     const {
