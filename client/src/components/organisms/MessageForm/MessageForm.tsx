@@ -4,6 +4,8 @@ import { MessageType, SocketUser } from 'utils/types/types';
 import { Color } from 'utils/types/enums';
 import ButtonSend from 'components/atoms/SendButton/SendButton';
 import InputMessage from 'components/atoms/CustomInput/CustomInput';
+import EmojiPicker from 'components/molecules/EmojiPicker/EmojiPicker';
+import { IEmojiData } from 'emoji-picker-react';
 import { FormWrapper, Form } from './MessageFormStyles';
 
 type Props = {
@@ -34,6 +36,11 @@ const MessageForm = ({ username, className }: Props) => {
     setTypingMessage({ date: new Date(), sender, text: msgText });
   };
 
+  const concatMessageWithEmoji = ({emoji}: IEmojiData) => setTypingMessage(currMessage => ({
+    ...currMessage,
+    text: `${currMessage.text}${emoji}`
+  }))
+
   useEffect(() => {
     const clearForm = () => {
       setTypingMessage(defaultMessage);
@@ -47,6 +54,7 @@ const MessageForm = ({ username, className }: Props) => {
     <FormWrapper className={className}>
       <Form onSubmit={e => handleSubmit(e)}>
         <InputMessage type='text' placeholder='Type new message' value={typingMessage.text} onChange={e => handleChange(e, username)} />
+        <EmojiPicker getEmoji={concatMessageWithEmoji}/>
         <ButtonSend color={Color.LightBlue} type='submit' />
       </Form>
     </FormWrapper>
