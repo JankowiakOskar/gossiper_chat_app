@@ -3,8 +3,11 @@ import ReactDOM from 'react-dom';
 import store from 'store';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
+import {registerIcons} from 'utils/icons'
 import Root from './views/Root';
 import reportWebVitals from './reportWebVitals';
+
+registerIcons()
 
 ReactDOM.render(
   <React.StrictMode>

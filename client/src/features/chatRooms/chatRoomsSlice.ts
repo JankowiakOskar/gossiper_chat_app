@@ -20,7 +20,7 @@ export const fetchChatRooms = createAsyncThunk('chatrooms/fetchById', async (_, 
     await sleeper(1000);
     const {
       data: { chatRooms },
-    } = await axios.get('http://192.168.100.17:5000/api/chat/chatrooms');
+    } = await axios.get('http://192.168.100.146:5000/api/chat/chatrooms');
     return chatRooms as ChatRoom[];
   } catch (err) {
     const {
@@ -41,7 +41,7 @@ export const createChatRoom = createAsyncThunk('chatrooms/createRoom', async (ro
   try {
     const {
       data: { createdRoom },
-    } = await axios.put('http://192.168.100.17:5000/api/chat/chatrooms', roomWithCreator);
+    } = await axios.put('http://192.168.100.146:5000/api/chat/chatrooms', roomWithCreator);
     return createdRoom as ChatRoom;
   } catch (err) {
     const {
