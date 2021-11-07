@@ -3,10 +3,19 @@ import { MessageType } from 'utils/types/types';
 import { Direction } from 'utils/types/enums';
 import { MessageWrapper, MessageAuthor, MessageDate, MessageText } from './MessageStyles';
 
-const formatDate = (dateParam: Date) => {
+const formatMessageDate = (dateParam: Date) => {
   const d = new Date(dateParam);
-  const formatedMinutes = d.getMinutes() < 10 ? `0${d.getMinutes()}` : d.getMinutes();
-  return `${d.getHours()}:${formatedMinutes}`;
+  const formatedDate = {
+    day: d.getUTCDate(),
+    month: d.getUTCMonth() + 1,
+    year: d.getFullYear(),
+  };
+  const formatedTime = {
+    hours: d.getHours(),
+    minutes: d.getMinutes() < 10 ? `0${d.getMinutes()}` : d.getMinutes(),
+  };
+
+  return `${formatedDate.day}/${formatedDate.month}/${formatedDate.year} ${formatedTime.hours}:${formatedTime.minutes}`;
 };
 
 type MessageProps = MessageType & {
@@ -14,7 +23,7 @@ type MessageProps = MessageType & {
 };
 
 const Message = ({ text, date, direction, sender }: MessageProps) => {
-  const formatedDate = formatDate(date);
+  const formatedDate = formatMessageDate(date);
   return (
     <MessageWrapper direction={direction}>
       <MessageAuthor direction={direction}>{sender}</MessageAuthor>

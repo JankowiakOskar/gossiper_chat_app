@@ -42,12 +42,14 @@ const MessageForm = ({ username, className }: Props) => {
   }))
 
   useEffect(() => {
-    const clearForm = () => {
-      setTypingMessage(defaultMessage);
-      setSubmitted(false);
-    };
-
-    clearForm();
+    if(isSubmitted) {
+      const clearForm = () => {
+        setTypingMessage(defaultMessage);
+        setSubmitted(false);
+      };
+  
+      clearForm();
+    }
   }, [isSubmitted]);
 
   return (
