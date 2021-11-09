@@ -12,9 +12,10 @@ import TransitionProvider from 'providers/TransitionProvider';
 import ReactTooltip from 'react-tooltip';
 import LoaderProvider from 'providers/LoaderProvider';
 import Heading from 'components/atoms/Heading/Heading';
-import Modal from 'components/organisms/Modal/Modal';
+import Modal from 'components/molecules/Modal/Modal';
 import RoomCreateForm from 'components/organisms/RoomCreateForm/RoomCreateForm';
 import { ReactComponent as IconPlus } from 'assets/svgs/icon-plus.svg';
+import AccessRoomModal from 'components/organisms/AccessRoomModal/AccessRoomModal';
 import { StyledButton, Wrapper, RoomsSection, StyledRoomCard, Overlay } from './ChatRoomsPageStyles';
 
 const overlayVariants = {
@@ -81,6 +82,7 @@ const ChatRoomsPage = () => {
                 />
               ))}
               <ReactTooltip id='activeUsers' effect='solid' />
+              <ReactTooltip id='entry' effect='solid' />
             </RoomsSection>
             <AnimatePresence exitBeforeEnter>
               {selectedCard && (
@@ -97,6 +99,7 @@ const ChatRoomsPage = () => {
                     isExpanded
                   />
                   <ReactTooltip id='activeUsers' effect='solid' />
+                  <ReactTooltip id='activeUsers' effect='solid' />
                 </Overlay>
               )}
             </AnimatePresence>
@@ -105,9 +108,13 @@ const ChatRoomsPage = () => {
         <StyledButton onClick={() => dispatch(openSelectedModal(ModalKind.RoomCreatorModal))} data-for='addRoom' data-tip='Create new room'>
           <IconPlus />
         </StyledButton>
+
         <Modal isOpen={selectedModal === ModalKind.RoomCreatorModal} onCloseHandler={() => dispatch(closeModal())}>
           <RoomCreateForm />
         </Modal>
+
+        <AccessRoomModal />
+
         <ReactTooltip id='addRoom' effect='solid' place='left' />
       </Wrapper>
     </TransitionProvider>

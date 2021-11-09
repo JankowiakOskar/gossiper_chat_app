@@ -35,7 +35,7 @@ const modalContentVariants = {
 type Props = {
   isOpen: boolean;
   children: React.ReactNode;
-  onCloseHandler: () => any;
+  onCloseHandler: () => void;
 };
 
 const Modal = ({ isOpen, onCloseHandler, children }: Props) => {

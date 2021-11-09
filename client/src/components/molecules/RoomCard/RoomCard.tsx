@@ -71,7 +71,7 @@ const RoomCard = forwardRef<HTMLDivElement, RoomCardProps>(
 
     return (
       <Wrapper
-        {...(ref && { ref })}
+        ref={ref}
         isExpanded={isExpanded}
         layoutId={id}
         className={className}
@@ -79,7 +79,7 @@ const RoomCard = forwardRef<HTMLDivElement, RoomCardProps>(
         variants={!isExpanded ? roomCardVariants : expandedVariants}
         initial='hidden'
         animate='visible'
-        onClick={handleCB && handleCB}
+        onClick={handleCB}
       >
         <RoomTitle>{name}</RoomTitle>
         <RoomDescriptions>
@@ -97,7 +97,9 @@ const RoomCard = forwardRef<HTMLDivElement, RoomCardProps>(
         </RoomDescriptions>
         <RoomDownBar>
           <IconsWrapper>
-            {isPrivate ? <ClosedPadlockIcon /> : <OpenedPadlockIcon />}
+            <span data-for="entry" data-tip={isPrivate ? 'Needed password to get inside' : 'Free room'}>
+              {isPrivate ? <ClosedPadlockIcon /> : <OpenedPadlockIcon />}
+            </span>
             <IconActiveUsersWrapper data-for='activeUsers' data-tip={`Active users in ${name}`}>
               <ChatPersonIcon stroke={themeContext.colors.darkBlue} />
               <StyledCircle numInside={activeUsers} bgColor={Color.LightGreen} />
