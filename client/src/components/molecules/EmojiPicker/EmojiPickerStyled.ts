@@ -7,6 +7,7 @@ export const Wrapper = styled.div`
     width: 3rem;
     color: ${({theme}) => theme.colors.lightBlue};
     cursor: pointer;
+    transition: all 0.2s ease-out;
   }
 `
 

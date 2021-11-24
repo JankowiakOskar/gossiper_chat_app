@@ -1,20 +1,19 @@
-import {useState, useCallback} from 'react'
+import { useState, useCallback } from 'react';
 
 type ToggleParams = {
-  initialActive?: boolean
-}
+  initialActive?: boolean;
+};
 
+export const useToggle = ({ initialActive = false }: ToggleParams) => {
+  const [isActive, setActive] = useState(initialActive);
 
-export const useToggle = ({initialActive = false}: ToggleParams) => {
-  const [isActive, setActive] = useState(initialActive)
+  const handleToggle = useCallback(() => setActive(prevState => !prevState), []);
 
-  const handleToggle = useCallback(() => setActive(prevState => !prevState), [])
-
-  const handleClose = useCallback(() => setActive(false), [])
+  const handleClose = useCallback(() => setActive(false), []);
 
   return {
     isActive,
     handleToggle,
-    handleClose
-  }
-}
+    handleClose,
+  };
+};

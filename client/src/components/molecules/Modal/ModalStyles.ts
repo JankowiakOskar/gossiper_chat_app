@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import Button from 'components/atoms/Button/ButtonStyles';
 
-export const ModalOverlay = styled.div`
+export const ModalOverlay = styled(motion.div)`
   z-index: 9999;
   position: fixed;
   top: 0;
