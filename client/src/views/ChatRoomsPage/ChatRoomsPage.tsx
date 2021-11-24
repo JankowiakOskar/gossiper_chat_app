@@ -24,6 +24,7 @@ const overlayVariants = {
   },
   animate: {
     opacity: 1,
+    backdropFilter: `blur(5px)`,
     transition: {
       when: 'beforeChildren',
       ease: 'easeIn',
@@ -31,11 +32,12 @@ const overlayVariants = {
     },
   },
   hidden: {
-    opacity: [1, 0],
+    opacity: 0,
+    backdropFilter: `blur(0px)`,
     transition: {
       when: 'beforeChildren',
       ease: 'easeOut',
-      duration: 0.4,
+      duration: 0.3,
     },
   },
 };

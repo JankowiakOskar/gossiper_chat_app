@@ -3,34 +3,10 @@ import { useRef } from 'react';
 import { Color } from 'utils/types/enums';
 import { AnimatePresence } from 'framer-motion';
 import useOutsideClick from 'hooks/useOutsideClick';
+import { modalOverlayVariants, modalContentVariants  } from './helpers/animations';
 import { ModalOverlay, ModalContent, CloseModalBtn } from './ModalStyles';
 
 const modalDOMContainer = document.querySelector('#modal') as HTMLElement;
-
-const modalContentVariants = {
-  initial: {
-    y: -50,
-    opacity: 0,
-  },
-  animate: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      type: 'spring',
-      stiffness: 100,
-      mass: 0.9,
-      duration: 0.4,
-    },
-  },
-  exit: {
-    opacity: [1, 0.5],
-    scale: [1, 0],
-    transition: {
-      type: 'easeIn',
-      duration: 0.4,
-    },
-  },
-};
 
 type Props = {
   isOpen: boolean;
@@ -45,7 +21,7 @@ const Modal = ({ isOpen, onCloseHandler, children }: Props) => {
   return ReactDOM.createPortal(
     <AnimatePresence exitBeforeEnter>
       {isOpen ? (
-        <ModalOverlay>
+        <ModalOverlay key="modal" variants={modalOverlayVariants} initial='initial' animate='animate' exit='exit'> 
           <ModalContent ref={modalRef} variants={modalContentVariants} initial='initial' animate='animate' exit='exit'>
             <CloseModalBtn color={Color.LightBlue} onClick={onCloseHandler}>
               X
