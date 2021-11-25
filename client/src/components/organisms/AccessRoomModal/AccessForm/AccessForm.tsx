@@ -1,10 +1,8 @@
 import { useForm } from 'react-hook-form';
-import InputField from 'components/molecules/InputField/InputField';
-import Button from 'components/atoms/Button/ButtonStyles';
 import { useToggle } from 'hooks/useToggle';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ChatRoom } from 'features/chatRooms/types';
-import { StyledFieldWrapper } from './AccessFormStyles';
+import Heading from 'components/atoms/Heading/Heading';
+import { StyledForm, StyledFieldWrapper, StyledInputField, StyledFontAwesomeIcon, StyledButton } from './AccessFormStyles';
 
 const AccessForm = () => {
   const { isActive: isShowedPassword, handleToggle: toggleShowPassword } = useToggle({ initialActive: false });
@@ -18,13 +16,14 @@ const AccessForm = () => {
     console.log(data);
   };
   return (
-    <form onSubmit={handleSubmit(processLogin)}>
+    <StyledForm onSubmit={handleSubmit(processLogin)}>
+      <Heading title="Access to room"/>
       <StyledFieldWrapper>
-        <InputField name='roomPassword' label='Room password' ref={register} type={isShowedPassword ? 'text' : 'password'} />
-        <FontAwesomeIcon onClick={toggleShowPassword} icon={isShowedPassword ? 'eye' : 'eye-slash'} />
+        <StyledInputField name='roomPassword' label='Room password' ref={register} type={isShowedPassword ? 'text' : 'password'} />
+        <StyledFontAwesomeIcon onClick={toggleShowPassword} icon={isShowedPassword ? 'eye' : 'eye-slash'} />
       </StyledFieldWrapper>
-      <Button>Get into room</Button>
-    </form>
+      <StyledButton>Get into room</StyledButton>
+    </StyledForm>
   );
 };
 

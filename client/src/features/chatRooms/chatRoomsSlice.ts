@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { ErrorMessage } from 'utils/types/interfaces';
+import { ErrorMessage, Error } from 'utils/types/interfaces';
 import { sleeper } from 'utils';
 import { mergeChatRoomWithCreator } from 'utils/roomsUtils';
 import { ChatRoomsState, ChatRoom, ChatRoomPreview } from './types';
@@ -25,7 +25,7 @@ export const fetchChatRooms = createAsyncThunk('chatrooms/fetchById', async (_, 
   } catch (err) {
     const {
       response: { data, code },
-    } = err;
+    } = err as Error;
     const customError = { code, errorMessage: data } as ErrorMessage;
     return rejectWithValue(customError);
   }
@@ -46,12 +46,17 @@ export const createChatRoom = createAsyncThunk('chatrooms/createRoom', async (ro
   } catch (err) {
     const {
       response: { data, code },
-    } = err;
+    } = err as Error;
 
     const customError = { code, errorMessage: data } as ErrorMessage;
     return rejectWithValue(customError);
   }
 });
+
+export const signInToRoom = createAsyncThunk(
+  '/chatrooms/signIn',
+  async (roomCredentials: Required<Pick<ChatRoom, 'id' | 'password'>>, { rejectWithValue }) => {},
+);
 
 export const chatRoomsSlice = createSlice({
   name: 'chatRooms',
