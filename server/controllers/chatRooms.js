@@ -47,6 +47,23 @@ const createChatRoom = async (req, res) => {
   }
 };
 
+export const signInToRoom = async (req, res) => {
+  const roomId = req.params.id;
+  const roomPasword = req.body.password;
+  const roomToSignIn = await ChatRoom.findById(roomId);
+
+  if (!roomToSignIn) return res.status(404).send("Room not found");
+
+  const isValidPassword = await bcrypt.compare(
+    roomPasword,
+    roomToSignIn.password
+  );
+
+  if (!isValidPassword) return res.status(401).send("Invalid password");
+
+  res.status(200).send("Succesfully logged into room");
+};
+
 module.exports = {
   getAllChatRooms,
   createChatRoom,
