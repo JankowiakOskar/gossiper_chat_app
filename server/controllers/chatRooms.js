@@ -47,7 +47,7 @@ const createChatRoom = async (req, res) => {
   }
 };
 
-export const signInToRoom = async (req, res) => {
+const signInToRoom = async (req, res) => {
   const roomId = req.params.id;
   const roomPasword = req.body.password;
   const roomToSignIn = await ChatRoom.findById(roomId);
@@ -67,4 +67,5 @@ export const signInToRoom = async (req, res) => {
 module.exports = {
   getAllChatRooms,
   createChatRoom,
+  signInToRoom,
 };
