@@ -3,7 +3,7 @@ import axios from 'axios';
 import { saveItemInLS, getItemFromLS } from 'utils/storageHelpers';
 import { setAuthAxiosConfig } from 'services/authAxios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { ErrorMessage } from 'utils/types/interfaces';
+import { ErrorMessage, Error } from 'utils/types/interfaces';
 import { ProcessStatus } from 'utils/types/enums';
 import { AuthState, AuthTokenType, UserData } from './types';
 
@@ -22,7 +22,7 @@ export const signUp = createAsyncThunk<AuthState, UserData, { rejectValue: Error
     } catch (err) {
       const {
         response: { data, code },
-      } = err;
+      } = err as Error;
       const customErr = { code, errorMessage: data };
       return rejectWithValue(customErr);
     }
@@ -41,24 +41,24 @@ export const logIn = createAsyncThunk<AuthState, UserData, { rejectValue: ErrorM
     } catch (err) {
       const {
         response: { data, code },
-      } = err;
+      } = err as Error;
       const customErr = { code, errorMessage: data };
       return rejectWithValue(customErr);
     }
   },
 );
 
-export const checkOutLoggedIn = createAsyncThunk('auth/checkOutLoggedIn', async (_, { rejectWithValue }) => {
+export const checkOutLoggedIn = createAsyncThunk('auth/checkCredentials', async (_, { rejectWithValue }) => {
   const authToken: AuthTokenType | null = getItemFromLS('auth-token');
   if (!authToken) return {};
   setAuthAxiosConfig(authToken);
   try {
-    const { data } = await axios.post('http://192.168.100.146:5000/api/user/checkLoggedIn');
+    const { data } = await axios.post('http://192.168.100.146:5000/api/user');
     return data;
   } catch (err) {
     const {
       response: { data, code },
-    } = err;
+    } = err as Error;
     const customErr = { code, errorMessage: data } as ErrorMessage;
     return rejectWithValue(customErr);
   }

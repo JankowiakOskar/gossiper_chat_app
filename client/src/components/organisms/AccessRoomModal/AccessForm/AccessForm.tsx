@@ -1,30 +1,52 @@
 import { useForm } from 'react-hook-form';
-import InputField from 'components/molecules/InputField/InputField';
-import Button from 'components/atoms/Button/ButtonStyles';
+import { useAppDispatch, useAppSelector } from 'store';
 import { useToggle } from 'hooks/useToggle';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ChatRoom } from 'features/chatRooms/types';
-import { StyledFieldWrapper } from './AccessFormStyles';
+import { signInToRoom } from 'features/chatRooms/chatRoomsSlice';
+import { closeModal } from 'features/modal/modalSlice';
+import Heading from 'components/atoms/Heading/Heading';
+import { useHistory } from 'react-router-dom';
+import { Routes } from 'routes';
+import { StyledForm, StyledFieldWrapper, StyledInputField, StyledFontAwesomeIcon, StyledButton } from './AccessFormStyles';
 
 const AccessForm = () => {
   const { isActive: isShowedPassword, handleToggle: toggleShowPassword } = useToggle({ initialActive: false });
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, reset } = useForm({
     defaultValues: {
-      roomPassword: '',
+      password: '',
     },
   });
+  const dispatch = useAppDispatch();
+  const { roomSignInId } = useAppSelector(({ chatRooms }) => chatRooms);
+  const history = useHistory();
 
-  const processLogin = (data: Required<Pick<ChatRoom, 'password'>>) => {
-    console.log(data);
+  const processLogin = async ({ password }: Required<Pick<ChatRoom, 'password'>>) => {
+    try {
+      const result = await dispatch(signInToRoom({ password })).unwrap();
+
+      dispatch(closeModal());
+
+      history.push(`${Routes.ChatRooms}/${roomSignInId}`);
+
+      return result;
+    } catch (err) {
+      reset();
+
+      dispatch(closeModal());
+
+      return err;
+    }
   };
+
   return (
-    <form onSubmit={handleSubmit(processLogin)}>
+    <StyledForm onSubmit={handleSubmit(processLogin)}>
+      <Heading title='Access to room' />
       <StyledFieldWrapper>
-        <InputField name='roomPassword' label='Room password' ref={register} type={isShowedPassword ? 'text' : 'password'} />
-        <FontAwesomeIcon onClick={toggleShowPassword} icon={isShowedPassword ? 'eye' : 'eye-slash'} />
+        <StyledInputField name='password' label='Room password' ref={register} type={isShowedPassword ? 'text' : 'password'} />
+        <StyledFontAwesomeIcon onClick={toggleShowPassword} icon={isShowedPassword ? 'eye' : 'eye-slash'} />
       </StyledFieldWrapper>
-      <Button>Get into room</Button>
-    </form>
+      <StyledButton type='submit'>Get into room</StyledButton>
+    </StyledForm>
   );
 };
 
