@@ -26,5 +26,6 @@ export interface ChatRoomsState {
   chatRooms: ChatRoom[];
   areFetchingRooms: boolean;
   isRoomCreating: boolean;
+  roomSignInId: ChatRoom['id'];
   error: ErrorMessage;
 }

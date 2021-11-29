@@ -18,10 +18,6 @@ const registerSchema = yup.object().shape({
   email: yup.string().email('Your email is not correct').required('Email is required'),
   login: yup.string().required('Login is required'),
   password: yup.string().required('Password is required'),
-  // repeatedPassword: yup
-  //   .string()
-  //   .required('Repeat your password')
-  //   .oneOf([yup.ref('password'), null], 'Passwords must be the same'),
 });
 
 const loginSchema = yup.object().shape({
@@ -70,13 +66,6 @@ const AuthForm = () => {
             <InputField name='email' label='Email' type='email' ref={register} error={errors.email?.message} />
             <StyledInputField name='login' label='Login' type='text' ref={register} error={errors.login?.message} />
             <StyledInputField name='password' label='Password' type='password' ref={register} error={errors.password?.message} />
-            {/* <StyledInputField
-              name='repeatedPassword'
-              label='Repeat Password'
-              type='password'
-              ref={register}
-              error={errors.repeatedPassword?.message}
-            /> */}
           </>
         )}
         <StyledButton role='submit' disabled={isAuthenticate}>

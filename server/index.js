@@ -12,8 +12,11 @@ mongoose.set("useUnifiedTopology", true);
 dotenv.config();
 
 // enable cors
-app.use(cors());
-
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 //Connect to DB
 mongoose.connect(
   process.env.DB_CONNECT,

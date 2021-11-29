@@ -8,8 +8,8 @@ const {
 
 router.get("/chatrooms", verify, getAllChatRooms);
 
-router.put("/chatrooms", verify, createChatRoom);
+router.post("/chatrooms", verify, createChatRoom);
 
-router.put("/chatrooms/:id", verfy, signInToRoom);
+router.post("/chatrooms/:id", verify, signInToRoom);
 
 module.exports = router;
