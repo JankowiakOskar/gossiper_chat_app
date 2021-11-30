@@ -1,37 +1,49 @@
-import { Switch, Route, useLocation } from 'react-router-dom';
-import { Routes } from 'routes';
+import * as React from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes as routes, Params } from 'routes';
 import useCheckLogged from 'hooks/useCheckLogged';
 import { AnimatePresence } from 'framer-motion';
 import smoothscroll from 'smoothscroll-polyfill';
-import PrivateRoute from 'providers/PrivateRoute';
-import MainLayout from 'layouts/MainLayout';
-import AuthPage from 'views/AuthPage';
+import LoaderComponent from 'components/molecules/LoaderComponent/LoaderComponent';
+import AuthProtected from 'providers/AuthProtected';
 import Home from 'views/Home/Home';
-import ChatRoomsPage from 'views/ChatRoomsPage/ChatRoomsPage';
-import ChatRoom from 'views/ChatRoom/ChatRoom';
-import LoaderProvider from 'providers/LoaderProvider';
 
 smoothscroll.polyfill();
 
+const AuthPage = React.lazy(() => import('./AuthPage'));
+const ChatRoomsPage = React.lazy(() => import('./ChatRoomsPage/ChatRoomsPage'));
+const ChatRoom = React.lazy(() => import('./ChatRoom/ChatRoom'));
+
 const Root = () => {
-  const isChecking = useCheckLogged();
+  useCheckLogged();
   const location = useLocation();
 
   return (
-    <div className='App'>
-      <MainLayout>
-        <LoaderProvider isLoading={isChecking} loadingMessage='Please wait, loading...'>
-          <AnimatePresence exitBeforeEnter initial={false}>
-            <Switch location={location} key={location.pathname}>
-              <Route exact path={Routes.Home} component={Home} />
-              <Route path={Routes.Auth} component={AuthPage} />
-              <PrivateRoute exact path={Routes.ChatRooms} component={ChatRoomsPage} />
-              <PrivateRoute path={Routes.ChatRoom} component={ChatRoom} />
-            </Switch>
-          </AnimatePresence>
-        </LoaderProvider>
-      </MainLayout>
-    </div>
+    <AnimatePresence exitBeforeEnter initial={false}>
+      <Routes location={location} key={location.pathname}>
+        <Route path={routes.Home} element={<Home />} />
+        <Route path={routes.Auth} element={<AuthPage />} />
+        <Route
+          path={routes.ChatRooms}
+          element={
+            <AuthProtected navigateTo={routes.Auth}>
+              <React.Suspense fallback={<LoaderComponent loadingMessage='Loading available chats...' />}>
+                <ChatRoomsPage />
+              </React.Suspense>
+            </AuthProtected>
+          }
+        >
+          <Route
+            path={Params.IDParam}
+            element={
+              <AuthProtected navigateTo={routes.Auth}>
+                <ChatRoom />
+              </AuthProtected>
+            }
+          />
+        </Route>
+      </Routes>
+    </AnimatePresence>
   );
 };
 export default Root;

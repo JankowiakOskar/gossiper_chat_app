@@ -5,8 +5,7 @@ import { ChatRoom } from 'features/chatRooms/types';
 import { signInToRoom } from 'features/chatRooms/chatRoomsSlice';
 import { closeModal } from 'features/modal/modalSlice';
 import Heading from 'components/atoms/Heading/Heading';
-import { useHistory } from 'react-router-dom';
-import { Routes } from 'routes';
+import { useNavigate } from 'react-router-dom';
 import { StyledForm, StyledFieldWrapper, StyledInputField, StyledFontAwesomeIcon, StyledButton } from './AccessFormStyles';
 
 const AccessForm = () => {
@@ -18,7 +17,7 @@ const AccessForm = () => {
   });
   const dispatch = useAppDispatch();
   const { roomSignInId } = useAppSelector(({ chatRooms }) => chatRooms);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const processLogin = async ({ password }: Required<Pick<ChatRoom, 'password'>>) => {
     try {
@@ -26,7 +25,7 @@ const AccessForm = () => {
 
       dispatch(closeModal());
 
-      history.push(`${Routes.ChatRooms}/${roomSignInId}`);
+      navigate(`${roomSignInId}`);
 
       return result;
     } catch (err) {

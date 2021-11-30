@@ -1,8 +1,11 @@
 enum Routes {
   Home = '/',
   Auth = '/auth',
-  ChatRooms = '/chat/chatrooms',
-  ChatRoom = '/chat/chatrooms/:id',
+  ChatRooms = 'chat/chatrooms',
 }
 
-export { Routes };
+enum Params {
+  IDParam = ':id',
+}
+
+export { Routes, Params };

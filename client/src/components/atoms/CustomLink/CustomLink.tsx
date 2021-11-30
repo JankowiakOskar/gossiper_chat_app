@@ -6,8 +6,8 @@ type LProps = LinkProps & {
   className?: '';
 };
 
-const CustomLink = ({ children, className, ...rest }: LProps) => (
-  <StyledLink className={className} {...rest}>
+const CustomLink = ({ children, className, ...props }: LProps) => (
+  <StyledLink className={className} {...props}>
     {children}
   </StyledLink>
 );

@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Routes } from 'routes';
 import { ChatRoom } from 'features/chatRooms/types';
 import { openSelectedModal } from 'features/modal/modalSlice';
@@ -10,7 +10,7 @@ type ChatRoomPreview = Pick<ChatRoom, 'id' | 'isPrivate'>;
 
 const useAccessToRoom = ({ id, isPrivate }: ChatRoomPreview) => {
   const dispatch = useAppDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const getIntoRoom = () => {
     if (isPrivate) {
@@ -19,7 +19,7 @@ const useAccessToRoom = ({ id, isPrivate }: ChatRoomPreview) => {
       return;
     }
 
-    history.push(`${Routes.ChatRooms}/${id}`);
+    navigate(`${Routes.ChatRooms}/${id}`);
   };
 
   return {
