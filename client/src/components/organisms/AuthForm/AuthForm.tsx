@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Routes } from 'routes';
 import { useAppDispatch, useAppSelector } from 'store';
 import { useForm } from 'react-hook-form';
@@ -30,7 +30,7 @@ const AuthForm = () => {
   const { register, handleSubmit, reset, errors } = useForm({
     resolver: yupResolver(isRegistered ? loginSchema : registerSchema),
   });
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { authProcess } = useAppSelector(state => state.auth);
   const isAuthenticate = authProcess === ProcessStatus.Started;
@@ -40,7 +40,7 @@ const AuthForm = () => {
   const onSubmit = async ({ login, ...rest }: UserData): Promise<void> => {
     if (isRegistered) {
       const resultLogIn = await dispatch(logIn({ ...rest }));
-      logIn.fulfilled.match(resultLogIn) && history.push(Routes.Home);
+      logIn.fulfilled.match(resultLogIn) && navigate(Routes.Home);
     } else {
       const resultSignUp = await dispatch(signUp({ login, ...rest }));
       signUp.fulfilled.match(resultSignUp) && switchFormType();

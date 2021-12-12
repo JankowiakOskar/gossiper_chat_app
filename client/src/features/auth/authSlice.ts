@@ -8,7 +8,7 @@ import { ProcessStatus } from 'utils/types/enums';
 import { AuthState, AuthTokenType, UserData } from './types';
 
 const initialState = {
-  authToken: '',
+  authToken: getItemFromLS('auth-token'),
   login: '',
   authProcess: ProcessStatus.Idle,
 } as AuthState;
@@ -48,7 +48,10 @@ export const logIn = createAsyncThunk<AuthState, UserData, { rejectValue: ErrorM
   },
 );
 
-export const checkOutLoggedIn = createAsyncThunk('auth/checkCredentials', async (_, { rejectWithValue }) => {
+
+
+
+export const verifyLoggedIn = createAsyncThunk('auth/checkCredentials', async (_, { rejectWithValue }) => {
   const authToken: AuthTokenType | null = getItemFromLS('auth-token');
   if (!authToken) return {};
   setAuthAxiosConfig(authToken);
@@ -101,15 +104,15 @@ export const authSlice = createSlice({
     builder.addCase(logIn.rejected, state => {
       state.authProcess = ProcessStatus.Rejected;
     });
-    builder.addCase(checkOutLoggedIn.pending, state => {
+    builder.addCase(verifyLoggedIn.pending, state => {
       state.authProcess = ProcessStatus.Started;
     });
-    builder.addCase(checkOutLoggedIn.fulfilled, (state, action) => {
+    builder.addCase(verifyLoggedIn.fulfilled, (state, action) => {
       state.authProcess = ProcessStatus.Success;
       state.authToken = action.payload.authToken;
       state.login = action.payload.login;
     });
-    builder.addCase(checkOutLoggedIn.rejected, state => {
+    builder.addCase(verifyLoggedIn.rejected, state => {
       state.authProcess = ProcessStatus.Rejected;
       state.authToken = '';
     });

@@ -17,7 +17,7 @@ type Context = {
 export const ChatContext = createContext<Context>({ sendMessage: (message: MessageType['text']) => {} });
 
 const ChatRoom = () => {
-  const { id: roomId } = useParams<{ id: string }>();
+  const { id: roomId } = useParams() as { id: string };
   const { users, messages, sendMessage } = useSocket(roomId);
   const { isReachedDesktopDevice } = useWindow();
   return (

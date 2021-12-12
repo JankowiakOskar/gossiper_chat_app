@@ -2,19 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import store from 'store';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
-import {registerIcons} from 'utils/icons'
+import { BrowserRouter } from 'react-router-dom';
+import { registerIcons } from 'utils/icons';
+import MainLayout from 'layouts/MainLayout';
 import Root from './views/Root';
 import reportWebVitals from './reportWebVitals';
 
-registerIcons()
+registerIcons();
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Router>
-        <Root />
-      </Router>
+      <BrowserRouter>
+        <MainLayout>
+          <Root />
+        </MainLayout>
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root'),
