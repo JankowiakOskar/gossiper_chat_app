@@ -7,10 +7,10 @@ import smoothscroll from 'smoothscroll-polyfill';
 import LoaderComponent from 'components/molecules/LoaderComponent/LoaderComponent';
 import AuthProtected from 'providers/AuthProtected';
 import Home from 'views/Home/Home';
+import AuthPage from './AuthPage';
 
 smoothscroll.polyfill();
 
-const AuthPage = React.lazy(() => import('./AuthPage'));
 const ChatRoomsPage = React.lazy(() => import('./ChatRoomsPage/ChatRoomsPage'));
 const ChatRoom = React.lazy(() => import('./ChatRoom/ChatRoom'));
 
@@ -26,22 +26,23 @@ const Root = () => {
         <Route
           path={routes.ChatRooms}
           element={
-            <AuthProtected navigateTo={routes.Auth}>
-              <React.Suspense fallback={<LoaderComponent loadingMessage='Loading available chats...' />}>
+            <React.Suspense fallback={<LoaderComponent loadingMessage='We are loading available rooms...' />}>
+              <AuthProtected navigateTo={routes.Auth}>
                 <ChatRoomsPage />
-              </React.Suspense>
-            </AuthProtected>
+              </AuthProtected>
+            </React.Suspense>
           }
-        >
-          <Route
-            path={Params.IDParam}
-            element={
+        />
+        <Route
+          path={`${routes.ChatRooms}/${Params.IDParam}`}
+          element={
+            <React.Suspense fallback={<LoaderComponent loadingMessage='Loading room data...' />}>
               <AuthProtected navigateTo={routes.Auth}>
                 <ChatRoom />
               </AuthProtected>
-            }
-          />
-        </Route>
+            </React.Suspense>
+          }
+        />
       </Routes>
     </AnimatePresence>
   );

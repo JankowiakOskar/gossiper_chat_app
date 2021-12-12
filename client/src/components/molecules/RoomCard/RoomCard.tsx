@@ -32,7 +32,7 @@ const roomCardVariants = {
     opacity: 1,
     x: 0,
     transition: {
-      delay: index * 0.1,
+      delay: index * 0.02,
       ease: [0.45, 0.03, 0.2, -0.01],
     },
   }),
@@ -97,7 +97,7 @@ const RoomCard = forwardRef<HTMLDivElement, RoomCardProps>(
         </RoomDescriptions>
         <RoomDownBar>
           <IconsWrapper>
-            <span data-for="entry" data-tip={isPrivate ? 'Needed password to get inside' : 'Free room'}>
+            <span data-for='entry' data-tip={isPrivate ? 'Needed password to get inside' : 'Free room'}>
               {isPrivate ? <ClosedPadlockIcon /> : <OpenedPadlockIcon />}
             </span>
             <IconActiveUsersWrapper data-for='activeUsers' data-tip={`Active users in ${name}`}>

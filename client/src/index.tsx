@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { registerIcons } from 'utils/icons';
 import MainLayout from 'layouts/MainLayout';
-import LoaderComponent from 'components/molecules/LoaderComponent/LoaderComponent';
 import Root from './views/Root';
 import reportWebVitals from './reportWebVitals';
 
@@ -16,9 +15,7 @@ ReactDOM.render(
     <Provider store={store}>
       <BrowserRouter>
         <MainLayout>
-          <React.Suspense fallback={<LoaderComponent loadingMessage="We're checking if you're logged" />}>
-            <Root />
-          </React.Suspense>
+          <Root />
         </MainLayout>
       </BrowserRouter>
     </Provider>

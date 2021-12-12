@@ -1,7 +1,7 @@
 enum Routes {
   Home = '/',
   Auth = '/auth',
-  ChatRooms = 'chat/chatrooms',
+  ChatRooms = '/chat/chatrooms',
 }
 
 enum Params {

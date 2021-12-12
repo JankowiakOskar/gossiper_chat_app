@@ -10,7 +10,7 @@ export interface UserData {
 }
 
 export interface AuthState {
-  authToken: AuthTokenType;
+  authToken: AuthTokenType | null
   login: UserData['login'];
   authProcess: ProcessStatus;
   error?: ErrorMessage;
