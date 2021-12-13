@@ -8,6 +8,7 @@ import LoaderComponent from 'components/molecules/LoaderComponent/LoaderComponen
 import AuthProtected from 'providers/AuthProtected';
 import Home from 'views/Home/Home';
 import AuthPage from './AuthPage';
+import NotFoundPage from './404/NotFoundPage';
 
 smoothscroll.polyfill();
 
@@ -43,6 +44,7 @@ const Root = () => {
             </React.Suspense>
           }
         />
+        <Route path='*' element={<NotFoundPage />} />
       </Routes>
     </AnimatePresence>
   );

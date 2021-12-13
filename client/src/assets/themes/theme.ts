@@ -56,7 +56,7 @@ export const defaultTheme: DefaultTheme = {
     darkGreen: '#003B36',
     lightBlue: '#446DF6',
     darkBlue: '#0D0630',
-    red: '#e02c2c',
+    red: '#F24949',
     grey: '#eaeaea',
     darkGrey: '#ABA3A3',
     textGrey: '#807474',
